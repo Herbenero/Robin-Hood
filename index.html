@@ -310,10 +310,6 @@
       color:var(--muted);
       font-size:.92rem;
     }
-    .double-round{
-      color:var(--gold-2);
-      font-weight:800;
-    }
 
     .grid{
       margin-top:22px;
@@ -756,6 +752,7 @@
           <span class="token">Miss 0</span>
           <span class="token">Outer +1</span>
           <span class="token">Inner +2</span>
+          <span class="token">Double +5</span>
           <span class="token">Bull +6</span>
           <span class="token">Double Bull +10</span>
           <span class="token">Triple -2</span>
@@ -835,7 +832,7 @@
             <strong>Bull</strong>
             <span>+6 points</span>
           </button>
-          <button class="score-btn double" data-score="5" data-label=Double" type="button>
+          <button class="score-btn good" data-score="5" data-label="Double" type="button">
             <strong>Double</strong>
             <span>+5 points</span>
           </button>
@@ -951,9 +948,7 @@
       return {
         name,
         score: 0,
-        rounds: [0,0,0,0,0,0],
-        currentRoundThrows: [],
-        currentRoundScore: 0
+        rounds: [0,0,0,0,0,0]
       };
     }
 
@@ -961,18 +956,29 @@
       return name.trim().replace(/\s+/g, ' ').slice(0, 20);
     }
 
+    function getRoundMultiplier(){
+      return state.currentRound === 6 ? 2 : 1;
+    }
+
+    function getTurnTotal(){
+      return state.currentTurnThrows.reduce((sum, throwObj) => sum + throwObj.finalScore, 0);
+    }
+
     function addPlayer(){
       if(state.started) return;
       const name = sanitizeName(els.playerName.value);
       if(!name) return;
+
       if(state.players.some(p => p.name.toLowerCase() === name.toLowerCase())){
         alert('Player name already exists.');
         return;
       }
+
       state.players.push(createPlayer(name));
       els.playerName.value = '';
       renderPlayers();
       renderScoreboard();
+      renderRanking();
       updateStatus();
       els.playerName.focus();
     }
@@ -982,6 +988,7 @@
       state.players.splice(index, 1);
       renderPlayers();
       renderScoreboard();
+      renderRanking();
       updateStatus();
     }
 
@@ -990,26 +997,28 @@
         alert('Add at least one player.');
         return;
       }
+
       state.started = true;
       state.gameOver = false;
       state.currentPlayerIndex = 0;
       state.currentRound = 1;
       state.currentTurnThrows = [];
       state.history = [];
+
       state.players.forEach(player => {
         player.score = 0;
         player.rounds = [0,0,0,0,0,0];
-        player.currentRoundThrows = [];
-        player.currentRoundScore = 0;
       });
+
+      els.endgameBanner.classList.remove('show');
+      renderThrows();
       renderPlayers();
       renderScoreboard();
+      renderRanking();
       updateStatus();
-      setControlsDisabled(false);
-      els.endgameBanner.classList.remove('show');
     }
 
-    function resetGame(){
+    function resetMatch(){
       state.players = [];
       state.started = false;
       state.currentPlayerIndex = 0;
@@ -1017,177 +1026,51 @@
       state.currentTurnThrows = [];
       state.history = [];
       state.gameOver = false;
-      renderPlayers();
-      renderScoreboard();
-      renderThrows();
-      renderRanking();
-      updateStatus();
-      setControlsDisabled(true);
-      els.endgameBanner.classList.remove('show');
+
       els.playerName.value = '';
-    }
+      els.endgameBanner.classList.remove('show');
 
-    function setControlsDisabled(disabled){
-      scoreButtons.forEach(btn => btn.disabled = disabled);
-      els.undoBtn.disabled = disabled;
-      [...document.querySelectorAll('.score-btn, .ghost-btn, .btn')].forEach(btn => {
-        if(btn.disabled){
-          btn.style.opacity = '.5';
-          btn.style.pointerEvents = 'none';
-        } else {
-          btn.style.opacity = '';
-          btn.style.pointerEvents = '';
-        }
-      });
-      els.undoBtn.style.pointerEvents = disabled ? 'none' : '';
-      els.undoBtn.style.opacity = disabled ? '.5' : '';
-    }
-
-    function getCurrentPlayer(){
-      return state.players[state.currentPlayerIndex];
-    }
-
-    function getMultiplier(){
-      return state.currentRound === 6 ? 2 : 1;
-    }
-
-    function recordThrow(label, baseScore){
-      if(!state.started || state.gameOver) return;
-      const player = getCurrentPlayer();
-      if(!player) return;
-      if(state.currentTurnThrows.length >= 3) return;
-
-      const multiplier = getMultiplier();
-      const appliedScore = baseScore * multiplier;
-
-      const throwObj = { label, baseScore, appliedScore, round: state.currentRound, playerIndex: state.currentPlayerIndex };
-      state.currentTurnThrows.push(throwObj);
-      player.currentRoundThrows.push(throwObj);
-      player.currentRoundScore += appliedScore;
-      state.history.push(throwObj);
-
-      renderThrows();
-      updateStatus();
-
-      if(state.currentTurnThrows.length === 3){
-        completeTurn();
-      }
-    }
-
-    function undoThrow(){
-      if(!state.started || state.gameOver) return;
-      if(state.currentTurnThrows.length === 0) return;
-      const player = getCurrentPlayer();
-      const removed = state.currentTurnThrows.pop();
-      state.history.pop();
-
-      const idx = player.currentRoundThrows.lastIndexOf(removed);
-      if(idx > -1) player.currentRoundThrows.splice(idx, 1);
-      player.currentRoundScore -= removed.appliedScore;
-
-      renderThrows();
-      updateStatus();
-    }
-
-    function completeTurn(){
-      const player = getCurrentPlayer();
-      const roundIndex = state.currentRound - 1;
-      const turnTotal = player.currentRoundScore;
-
-      player.rounds[roundIndex] = turnTotal;
-      player.score += turnTotal;
-
-      showFlash(player.name, turnTotal, state.currentRound);
-
-      player.currentRoundThrows = [];
-      player.currentRoundScore = 0;
-      state.currentTurnThrows = [];
-
-      advanceGame();
+      renderPlayers();
       renderThrows();
       renderScoreboard();
-      updateStatus();
-    }
-
-    function advanceGame(){
-      if(state.currentPlayerIndex < state.players.length - 1){
-        state.currentPlayerIndex++;
-      } else {
-        state.currentPlayerIndex = 0;
-        state.currentRound++;
-      }
-
-      if(state.currentRound > 6){
-        endGame();
-      }
-    }
-
-    function endGame(){
-      state.gameOver = true;
-      state.started = false;
-      renderScoreboard(true);
       renderRanking();
       updateStatus();
-      setControlsDisabled(true);
-      els.endgameBanner.classList.add('show');
-    }
-
-    function showFlash(name, total, round){
-      els.flashPlayerName.textContent = name;
-      els.flashRoundTotal.textContent = `Round ${round} Total: ${total}`;
-      els.flashSubtext.textContent = round === 6
-        ? 'Final round complete for this player.'
-        : 'The next player steps to the oche.';
-      els.flashOverlay.classList.add('show');
-
-      setTimeout(() => {
-        els.flashOverlay.classList.remove('show');
-      }, 1500);
     }
 
     function renderPlayers(){
-      els.playersList.innerHTML = '';
-      if(state.players.length === 0){
-        els.playersList.innerHTML = '<span class="throw-pill">No players added</span>';
+      if(!state.players.length){
+        els.playersList.innerHTML = '';
         return;
       }
-      state.players.forEach((player, index) => {
-        const chip = document.createElement('div');
-        chip.className = 'player-chip';
-        chip.innerHTML = `<span>${player.name}</span>`;
-        if(!state.started){
-          const removeBtn = document.createElement('button');
-          removeBtn.type = 'button';
-          removeBtn.setAttribute('aria-label', `Remove ${player.name}`);
-          removeBtn.textContent = '×';
-          removeBtn.addEventListener('click', () => removePlayer(index));
-          chip.appendChild(removeBtn);
-        }
-        els.playersList.appendChild(chip);
-      });
+
+      els.playersList.innerHTML = state.players.map((player, idx) => `
+        <span class="player-chip">
+          ${player.name}
+          ${state.started ? '' : `<button type="button" data-remove="${idx}" aria-label="Remove ${player.name}">×</button>`}
+        </span>
+      `).join('');
+
+      if(!state.started){
+        els.playersList.querySelectorAll('button[data-remove]').forEach(btn => {
+          btn.addEventListener('click', () => removePlayer(Number(btn.dataset.remove)));
+        });
+      }
     }
 
     function renderThrows(){
-      const player = getCurrentPlayer();
-      const throws = state.currentTurnThrows;
-      els.throwsDisplay.innerHTML = '';
-
-      if(!player || throws.length === 0){
-        els.throwsDisplay.innerHTML = '<span class="throw-pill">No throws yet</span>';
+      if(state.currentTurnThrows.length === 0){
+        els.throwsDisplay.innerHTML = `<span class="throw-pill">No throws yet</span>`;
         return;
       }
 
-      throws.forEach(t => {
-        const pill = document.createElement('span');
-        pill.className = 'throw-pill';
-        pill.textContent = `${t.label} ${t.appliedScore >= 0 ? '+' : ''}${t.appliedScore}`;
-        els.throwsDisplay.appendChild(pill);
-      });
+      els.throwsDisplay.innerHTML = state.currentTurnThrows.map(t => {
+        const sign = t.finalScore > 0 ? '+' : '';
+        const doubledTag = t.multiplier === 2 ? ' ×2' : '';
+        return `<span class="throw-pill">${t.label} (${sign}${t.finalScore}${doubledTag})</span>`;
+      }).join('');
     }
 
-    function renderScoreboard(sortedFinal = false){
-      els.scoreboardBody.innerHTML = '';
-
+    function renderScoreboard(){
       if(state.players.length === 0){
         els.scoreboardBody.innerHTML = `
           <tr>
@@ -1197,135 +1080,195 @@
         return;
       }
 
-      const players = sortedFinal
-        ? [...state.players].sort((a,b) => b.score - a.score)
-        : state.players;
+      els.scoreboardBody.innerHTML = state.players.map((player, idx) => {
+        const active = state.started && !state.gameOver && idx === state.currentPlayerIndex;
+        const turnTotal = active ? getTurnTotal() : 0;
+        const thrown = active ? state.currentTurnThrows.length : 0;
 
-      players.forEach((player, index) => {
-        const originalIndex = state.players.indexOf(player);
-        const tr = document.createElement('tr');
-        if(!sortedFinal && state.started && originalIndex === state.currentPlayerIndex){
-          tr.classList.add('active-row');
-        }
-
-        const completedRound = player.rounds.findLastIndex(v => v !== 0);
-        const roundLabel = completedRound >= 0 ? `R${completedRound + 1}` : '—';
-        const currentTurn = (!sortedFinal && originalIndex === state.currentPlayerIndex)
-          ? player.currentRoundScore
-          : '—';
-        const thrown = (!sortedFinal && originalIndex === state.currentPlayerIndex)
-          ? `${state.currentTurnThrows.length}/3`
-          : '—';
-
-        tr.innerHTML = `
-          <td><strong>${index + 1}. ${player.name}</strong></td>
-          <td>${player.score}</td>
-          <td>${roundLabel}</td>
-          <td>${currentTurn}</td>
-          <td>${thrown}</td>
+        return `
+          <tr class="${active ? 'active-row' : ''}">
+            <td><strong>${player.name}</strong></td>
+            <td>${player.score}</td>
+            <td>${state.started || state.gameOver ? state.currentRound : '—'} / 6</td>
+            <td>${turnTotal}</td>
+            <td>${thrown} / 3</td>
+          </tr>
         `;
-        els.scoreboardBody.appendChild(tr);
-      });
-
-      if(sortedFinal){
-        renderRanking();
-      } else {
-        els.rankingList.innerHTML = '';
-      }
+      }).join('');
     }
 
     function renderRanking(){
-      els.rankingList.innerHTML = '';
-      if(!state.gameOver) return;
+      if(state.players.length === 0){
+        els.rankingList.innerHTML = '';
+        return;
+      }
 
-      const sorted = [...state.players].sort((a,b) => b.score - a.score);
-      sorted.forEach((player, idx) => {
-        const row = document.createElement('div');
-        row.className = 'rank-row';
-        const medal = idx === 0 ? '1st' : idx === 1 ? '2nd' : idx === 2 ? '3rd' : `#${idx + 1}`;
-        row.innerHTML = `
-          <div class="medal">${medal}</div>
+      const medals = ['1st', '2nd', '3rd'];
+      const sorted = [...state.players].sort((a, b) => b.score - a.score);
+
+      els.rankingList.innerHTML = sorted.map((player, index) => `
+        <div class="rank-row">
+          <div class="medal">${medals[index] || `#${index + 1}`}</div>
           <div class="name">${player.name}</div>
           <div class="score">${player.score}</div>
-        `;
-        els.rankingList.appendChild(row);
-      });
+        </div>
+      `).join('');
     }
 
     function updateStatus(){
-      const player = getCurrentPlayer();
+      els.roundDisplay.textContent = `Round ${state.currentRound} of 6`;
+      els.doubleRoundDisplay.textContent = state.currentRound === 6 ? 'Double Round active' : 'Standard scoring';
 
-      if(state.gameOver){
-        els.currentPlayerDisplay.textContent = 'Match complete';
-        els.dartsDisplay.textContent = '—';
-        els.turnTotalDisplay.textContent = '—';
-        els.roundDisplay.textContent = 'Final Rankings';
-        els.doubleRoundDisplay.innerHTML = '<span class="double-round">Game Over</span>';
-        els.headerStatus.textContent = 'Match complete';
-        return;
-      }
-
-      if(!state.started){
-        els.currentPlayerDisplay.textContent = state.players.length ? state.players[0].name : '—';
+      if(!state.started && !state.gameOver){
+        els.headerStatus.textContent = state.players.length
+          ? `${state.players.length} player(s) ready`
+          : 'Waiting for players';
+        els.currentPlayerDisplay.textContent = '—';
         els.dartsDisplay.textContent = '0 / 3';
         els.turnTotalDisplay.textContent = '0';
-        els.roundDisplay.textContent = 'Round 1 of 6';
-        els.doubleRoundDisplay.textContent = 'Standard scoring';
-        els.headerStatus.textContent = state.players.length
-          ? `${state.players.length} player${state.players.length > 1 ? 's' : ''} ready`
-          : 'Waiting for players';
         return;
       }
 
-      els.currentPlayerDisplay.textContent = player ? player.name : '—';
+      if(state.gameOver){
+        els.headerStatus.textContent = 'Match complete';
+        els.currentPlayerDisplay.textContent = '—';
+        els.dartsDisplay.textContent = '0 / 3';
+        els.turnTotalDisplay.textContent = '0';
+        return;
+      }
+
+      const currentPlayer = state.players[state.currentPlayerIndex];
+      els.headerStatus.textContent = `${currentPlayer.name} throwing`;
+      els.currentPlayerDisplay.textContent = currentPlayer.name;
       els.dartsDisplay.textContent = `${state.currentTurnThrows.length} / 3`;
-      els.turnTotalDisplay.textContent = player ? player.currentRoundScore : '0';
-      els.roundDisplay.textContent = `Round ${state.currentRound} of 6`;
-      els.doubleRoundDisplay.innerHTML = state.currentRound === 6
-        ? '<span class="double-round">Double points active</span>'
-        : 'Standard scoring';
-      els.headerStatus.textContent = `${player ? player.name : 'Player'} · Round ${state.currentRound}`;
+      els.turnTotalDisplay.textContent = String(getTurnTotal());
     }
 
-    els.addPlayerBtn.addEventListener('click', addPlayer);
-    els.playerName.addEventListener('keydown', e => {
-      if(e.key === 'Enter') addPlayer();
-    });
-    els.startGameBtn.addEventListener('click', startGame);
-    els.resetGameBtn.addEventListener('click', resetGame);
-    els.undoBtn.addEventListener('click', undoThrow);
+    function showFlash(playerName, roundTotal){
+      els.flashPlayerName.textContent = playerName;
+      els.flashRoundTotal.textContent = `Round Total: ${roundTotal}`;
 
-    scoreButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const score = Number(btn.dataset.score);
-        const label = btn.dataset.label;
-        recordThrow(label, score);
+      const nextPlayerIndex = state.currentPlayerIndex < state.players.length - 1
+        ? state.currentPlayerIndex + 1
+        : 0;
+
+      const nextName = state.players[nextPlayerIndex]?.name || 'next archer';
+      els.flashSubtext.textContent = `Prepare for ${nextName}.`;
+
+      els.flashOverlay.classList.add('show');
+      setTimeout(() => {
+        els.flashOverlay.classList.remove('show');
+      }, 900);
+    }
+
+    function advanceTurn(){
+      if(state.currentPlayerIndex < state.players.length - 1){
+        state.currentPlayerIndex += 1;
+      } else {
+        state.currentPlayerIndex = 0;
+        state.currentRound += 1;
+      }
+
+      if(state.currentRound > 6){
+        state.currentRound = 6;
+        state.started = false;
+        state.gameOver = true;
+        state.currentTurnThrows = [];
+        els.endgameBanner.classList.add('show');
+      } else {
+        state.currentTurnThrows = [];
+      }
+    }
+
+    function commitTurn(){
+      const player = state.players[state.currentPlayerIndex];
+      const roundIdx = state.currentRound - 1;
+      const turnTotal = getTurnTotal();
+
+      player.score += turnTotal;
+      player.rounds[roundIdx] += turnTotal;
+
+      state.history.push({
+        playerIndex: state.currentPlayerIndex,
+        round: state.currentRound,
+        throws: state.currentTurnThrows.map(t => ({ ...t })),
+        turnTotal
       });
-    });
 
-    els.flashOverlay.addEventListener('click', () => {
-      els.flashOverlay.classList.remove('show');
-    });
+      showFlash(player.name, turnTotal);
+      advanceTurn();
+      renderThrows();
+      renderScoreboard();
+      renderRanking();
+      updateStatus();
+    }
 
-    setControlsDisabled(true);
-    renderPlayers();
-    renderScoreboard();
-    renderThrows();
-    updateStatus();
+    function addThrow(baseScore, label){
+      if(!state.started || state.gameOver) return;
+      if(state.currentTurnThrows.length >= 3) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.style.animationPlayState = 'running';
-          observer.unobserve(entry.target);
-        }
+      const multiplier = getRoundMultiplier(); // Round 6 => 2
+      const finalScore = baseScore * multiplier;
+
+      state.currentTurnThrows.push({
+        label,
+        baseScore,
+        multiplier,
+        finalScore
       });
-    }, { threshold: 0.12 });
 
-    document.querySelectorAll('.reveal').forEach(el => {
-      el.style.animationPlayState = 'paused';
-      observer.observe(el);
-    });
+      renderThrows();
+      renderScoreboard();
+      updateStatus();
+
+      if(state.currentTurnThrows.length === 3){
+        commitTurn();
+      }
+    }
+
+    function undoThrow(){
+      if(!state.started || state.gameOver) return;
+      if(state.currentTurnThrows.length === 0) return;
+
+      state.currentTurnThrows.pop();
+      renderThrows();
+      renderScoreboard();
+      updateStatus();
+    }
+
+    function bindEvents(){
+      els.addPlayerBtn.addEventListener('click', addPlayer);
+      els.startGameBtn.addEventListener('click', startGame);
+      els.resetGameBtn.addEventListener('click', resetMatch);
+      els.undoBtn.addEventListener('click', undoThrow);
+
+      els.playerName.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') addPlayer();
+      });
+
+      scoreButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const baseScore = Number(btn.dataset.score);
+          const label = btn.dataset.label || 'Throw';
+          addThrow(baseScore, label);
+        });
+      });
+
+      els.flashOverlay.addEventListener('click', () => {
+        els.flashOverlay.classList.remove('show');
+      });
+    }
+
+    function init(){
+      bindEvents();
+      renderPlayers();
+      renderThrows();
+      renderScoreboard();
+      renderRanking();
+      updateStatus();
+    }
+
+    init();
   </script>
 </body>
 </html>
