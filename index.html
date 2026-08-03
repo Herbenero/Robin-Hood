@@ -2,1273 +2,1253 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Robin Hood Darts</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dart Night Olympic Hub</title>
   <style>
-    :root{
-      --bg:#0f1712;
-      --bg-2:#16221a;
-      --panel:#1b2a20cc;
-      --panel-solid:#1b2a20;
-      --ink:#f4eddc;
-      --muted:#cbbf9b;
-      --gold:#d6a94f;
-      --gold-2:#f0cb7b;
-      --moss:#7e9d67;
-      --red:#b84b3a;
-      --red-2:#d66a57;
-      --line:rgba(240, 220, 170, .18);
-      --shadow:0 20px 60px rgba(0,0,0,.35);
-      --radius:24px;
-      --radius-sm:16px;
-      --max:1280px;
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e24;
+      --accent: #ff9800;
+      --accent-hover: #e08600;
+      --text: #ffffff;
+      --text-muted: #aaaaaa;
+      --segment-complete: #4caf50;
+      --gold: #ffd700;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      color:var(--ink);
-      font-family:"Manrope", sans-serif;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(214,169,79,.12), transparent 25%),
-        radial-gradient(circle at 80% 10%, rgba(126,157,103,.10), transparent 26%),
-        linear-gradient(180deg, #102018 0%, #0c140f 100%);
-      min-height:100vh;
-      overflow-x:hidden;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,.015) 0,
-          rgba(255,255,255,.015) 1px,
-          transparent 1px,
-          transparent 40px
-        ),
-        repeating-linear-gradient(
-          0deg,
-          rgba(255,255,255,.01) 0,
-          rgba(255,255,255,.01) 1px,
-          transparent 1px,
-          transparent 40px
-        );
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.15));
+    body {
+      background-color: var(--bg-color);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    .wrap{
-      width:min(calc(100% - 32px), var(--max));
-      margin-inline:auto;
+    h1, h2, h3 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: var(--accent);
     }
 
-    .reveal{
-      opacity:0;
-      transform:translateY(24px);
-      animation:rise .8s cubic-bezier(.2,.65,.2,1) forwards;
-    }
-    .reveal:nth-child(2){animation-delay:.08s}
-    .reveal:nth-child(3){animation-delay:.16s}
-    .reveal:nth-child(4){animation-delay:.24s}
-    .reveal:nth-child(5){animation-delay:.32s}
-
-    @keyframes rise{
-      to{opacity:1; transform:none}
+    .container {
+      width: 100%;
+      max-width: 900px;
     }
 
-    header{
-      padding:28px 0 18px;
-      position:sticky;
-      top:0;
-      z-index:20;
-      backdrop-filter: blur(12px);
-      background:linear-gradient(to bottom, rgba(10,16,12,.78), rgba(10,16,12,.26));
-      border-bottom:1px solid rgba(240,220,170,.08);
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
 
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
+    .form-group {
+      margin-bottom: 15px;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
     }
 
-    .crest{
-      width:52px;
-      height:52px;
-      border-radius:50%;
-      position:relative;
-      background:
-        radial-gradient(circle at 50% 50%, var(--gold-2) 0 14%, #7f1414 14% 28%, #e7d4a1 28% 44%, #214231 44% 60%, #d6a94f 60% 72%, #152019 72%);
-      box-shadow:
-        inset 0 0 0 3px rgba(255,255,255,.08),
-        0 10px 25px rgba(0,0,0,.35);
-    }
-    .crest::after{
-      content:"";
-      position:absolute;
-      inset:8px;
-      border-radius:50%;
-      border:1px dashed rgba(255,255,255,.22);
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #444;
+      background: #111;
+      color: #fff;
     }
 
-    .brand h1{
-      margin:0;
-      font-family:"Cinzel", serif;
-      font-size:clamp(1.35rem, 2vw, 2rem);
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      line-height:1;
-    }
-    .brand small{
-      display:block;
-      color:var(--muted);
-      margin-top:4px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size:.72rem;
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      background: #111;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #444;
     }
 
-    .pill{
-      padding:10px 14px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      color:var(--muted);
-      font-size:.9rem;
-      background:rgba(255,255,255,.03);
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
     }
 
-    main{
-      padding:28px 0 64px;
+    .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
     }
 
-    .hero{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:22px;
-      align-items:stretch;
+    .btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      font-size: 1rem;
+      transition: background 0.2s;
+      margin-top: 5px;
     }
 
-    .hero-copy,
-    .hero-side,
-    .panel{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(14px);
+    .btn:hover { background: var(--accent-hover); }
+    .btn:disabled { background: #555; cursor: not-allowed; opacity: 0.6; }
+
+    .player-input-list {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
-    .hero-copy{
-      padding:clamp(24px, 4vw, 42px);
-      position:relative;
-      overflow:hidden;
-      min-height:280px;
+    /* HUB TABLES */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
     }
 
-    .hero-copy::before{
-      content:"";
-      position:absolute;
-      right:-60px;
-      top:-40px;
-      width:220px;
-      height:220px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(214,169,79,.22), transparent 68%);
-      pointer-events:none;
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #333;
     }
 
-    .eyebrow{
-      color:var(--gold-2);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      font-size:.76rem;
-      font-weight:800;
-      margin-bottom:14px;
+    th { background: #2a2a32; }
+
+    .rank-1 { color: var(--gold); font-weight: bold; }
+    .rank-2 { color: var(--silver); font-weight: bold; }
+    .rank-3 { color: var(--bronze); font-weight: bold; }
+
+    /* GAME ENGINE UI STYLES */
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      border-bottom: 2px solid #444;
+      padding-bottom: 10px;
     }
 
-    .hero-copy h2{
-      font-family:"Cinzel", serif;
-      font-size:clamp(2.2rem, 6vw, 5.2rem);
-      line-height:.96;
-      letter-spacing:.02em;
-      margin:0 0 16px;
-      max-width:10ch;
+    .active-player-banner {
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      background: #333;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      color: #ffeb3b;
+      animation: flash 1s infinite alternate;
     }
 
-    .hero-copy p{
-      margin:0;
-      max-width:60ch;
-      color:#e5dcc4;
-      font-size:1rem;
-      line-height:1.7;
+    @keyframes flash {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0.7; transform: scale(1.02); }
     }
 
-    .rules-inline{
-      margin-top:22px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
+    .track-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 20px 0;
     }
 
-    .token{
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.035);
-      color:var(--ink);
-      font-size:.9rem;
-      font-weight:700;
+    .track-segment {
+      flex: 1;
+      background: #444;
+      border: 2px solid #666;
+      border-radius: 8px;
+      padding: 10px 5px;
+      text-align: center;
+      transition: all 0.3s;
     }
 
-    .hero-side{
-      padding:24px;
-      display:grid;
-      align-content:space-between;
-      gap:18px;
-      position:relative;
-      overflow:hidden;
+    .track-segment.completed {
+      background: var(--segment-complete);
+      border-color: #81c784;
+      box-shadow: 0 0 10px var(--segment-complete);
     }
 
-    .dartboard-wrap{
-      display:grid;
-      place-items:center;
-      min-height:260px;
+    .track-segment .seg-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 5px;
     }
 
-    .dartboard{
-      width:min(100%, 320px);
-      aspect-ratio:1;
-      border-radius:50%;
-      position:relative;
-      background:
-        radial-gradient(circle at center,
-          #f4d784 0 5%,
-          #8c1717 5% 11%,
-          #ead9b0 11% 19%,
-          #214231 19% 28%,
-          #d7b25b 28% 36%,
-          #17231b 36% 52%,
-          #c89d41 52% 58%,
-          #0f1712 58% 100%);
-      box-shadow:
-        inset 0 0 0 3px rgba(255,255,255,.12),
-        inset 0 0 60px rgba(0,0,0,.35),
-        0 30px 60px rgba(0,0,0,.35);
-    }
-    .dartboard::before,
-    .dartboard::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:50%;
-    }
-    .dartboard::before{
-      background:
-        conic-gradient(
-          from 0deg,
-          transparent 0 4.5%,
-          rgba(255,255,255,.08) 4.5% 5%,
-          transparent 5% 9.5%,
-          rgba(255,255,255,.08) 9.5% 10%,
-          transparent 10% 14.5%,
-          rgba(255,255,255,.08) 14.5% 15%
-        );
-      opacity:.8;
-    }
-    .dartboard::after{
-      inset:12%;
-      border:1px dashed rgba(255,255,255,.18);
+    .track-segment .seg-req {
+      font-size: 0.75rem;
+      color: #ddd;
     }
 
-    .round-banner{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:16px;
-    }
-    .round-banner strong{
-      display:block;
-      font-family:"Cinzel", serif;
-      font-size:1.3rem;
-      letter-spacing:.06em;
-    }
-    .round-banner span{
-      color:var(--muted);
-      font-size:.92rem;
+    .dart-display-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 15px 0;
     }
 
-    .grid{
-      margin-top:22px;
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:22px;
+    .dart-display {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 10px;
     }
 
-    .panel{
-      padding:22px;
+    .dart-box {
+      width: 70px;
+      height: 40px;
+      border: 2px dashed #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 5px;
+      background: #222;
     }
 
-    .section-title{
-      display:flex;
-      justify-content:space-between;
-      align-items:end;
-      gap:12px;
-      margin-bottom:18px;
-    }
-    .section-title h3{
-      margin:0;
-      font-family:"Cinzel", serif;
-      font-size:1.5rem;
-      letter-spacing:.04em;
-    }
-    .section-title p{
-      margin:0;
-      color:var(--muted);
-      font-size:.92rem;
+    .turn-total {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #ffeb3b;
     }
 
-    .setup-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-bottom:16px;
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 15px;
     }
 
-    label{
-      display:block;
-      margin-bottom:8px;
-      color:var(--muted);
-      font-size:.88rem;
-      font-weight:700;
-      letter-spacing:.03em;
+    .btn-pad {
+      padding: 12px 5px;
+      font-weight: bold;
+      border-radius: 5px;
+      border: none;
+      background: #444;
+      color: #fff;
+      cursor: pointer;
     }
 
-    input{
-      width:100%;
-      padding:14px 16px;
-      border-radius:14px;
-      border:1px solid rgba(240,220,170,.14);
-      background:rgba(10,16,12,.5);
-      color:var(--ink);
-      font:inherit;
-      outline:none;
-      transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease;
-    }
-    input:focus{
-      border-color:rgba(214,169,79,.6);
-      box-shadow:0 0 0 4px rgba(214,169,79,.14);
-      transform:translateY(-1px);
+    .btn-pad:hover { background: #666; }
+    .btn-pad.modifier { background: #0288d1; }
+    .btn-pad.modifier.active { background: #00bcd4; box-shadow: 0 0 8px #00bcd4; }
+    .btn-pad.color-white { background: #eee; color: #111; }
+    .btn-pad.color-red { background: #d32f2f; color: #fff; }
+    .btn-pad.color-green { background: #388e3c; color: #fff; }
+    .btn-pad.color-black { background: #111; color: #fff; border: 1px solid #555; }
+    .btn-pad.action { background: #f57c00; }
+
+    .score-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 15px;
     }
 
-    .add-player-row{
-      display:flex;
-      gap:10px;
-      margin-bottom:18px;
+    .golf-btn {
+      padding: 15px 10px;
+      border-radius: 8px;
+      background: #333;
+      border: 1px solid #555;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    button{
-      border:none;
-      cursor:pointer;
-      font:inherit;
+    .golf-btn:hover { background: #444; border-color: var(--accent); }
+    .golf-btn.miss-btn { grid-column: span 2; background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #fca5a5; }
+
+    .advance-btn {
+      background: #388e3c;
+      color: white;
+      font-size: 1.1rem;
+      padding: 15px;
+      margin-top: 15px;
     }
 
-    .btn,
-    .score-btn,
-    .ghost-btn{
-      transition:transform .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
-    }
+    .advance-btn:hover { background: #2e7d32; }
 
-    .btn{
-      padding:14px 18px;
-      border-radius:14px;
-      font-weight:800;
-      letter-spacing:.02em;
-      background:linear-gradient(180deg, var(--gold-2), var(--gold));
-      color:#1a1408;
-      box-shadow:0 10px 24px rgba(214,169,79,.24);
-    }
-    .btn:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(214,169,79,.30)}
-    .btn:active{transform:translateY(0) scale(.99)}
-
-    .ghost-btn{
-      padding:14px 16px;
-      border-radius:14px;
-      background:rgba(255,255,255,.04);
-      color:var(--ink);
-      border:1px solid var(--line);
-    }
-    .ghost-btn:hover{
-      transform:translateY(-2px);
-      background:rgba(255,255,255,.07);
-    }
-
-    .players-list{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:10px;
-      min-height:44px;
-    }
-
-    .player-chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--line);
-      font-weight:700;
-    }
-
-    .player-chip button{
-      width:24px;
-      height:24px;
-      border-radius:50%;
-      background:rgba(184,75,58,.18);
-      color:#ffd5cc;
-      border:1px solid rgba(184,75,58,.25);
-      font-size:.9rem;
-      line-height:1;
-    }
-
-    .status-strip{
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:12px;
-      margin:18px 0 20px;
-    }
-
-    .stat{
-      padding:16px;
-      border-radius:18px;
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
-      border:1px solid var(--line);
-    }
-    .stat .k{
-      color:var(--muted);
-      font-size:.78rem;
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      font-weight:800;
-      margin-bottom:8px;
-      display:block;
-    }
-    .stat .v{
-      font-size:clamp(1rem, 2vw, 1.35rem);
-      font-weight:800;
-    }
-
-    .score-controls{
-      display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:12px;
-    }
-
-    .score-btn{
-      min-height:78px;
-      border-radius:18px;
-      padding:12px;
-      text-align:left;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      color:var(--ink);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
-    }
-
-    .score-btn strong{
-      display:block;
-      font-size:1rem;
-      margin-bottom:6px;
-    }
-    .score-btn span{
-      color:var(--muted);
-      font-size:.86rem;
-    }
-
-    .score-btn:hover{
-      transform:translateY(-3px);
-      border-color:rgba(214,169,79,.45);
-      box-shadow:0 14px 26px rgba(0,0,0,.22);
-    }
-    .score-btn:active{
-      transform:translateY(0) scale(.99);
-    }
-
-    .score-btn.good{background:linear-gradient(180deg, rgba(126,157,103,.18), rgba(255,255,255,.03))}
-    .score-btn.bad{background:linear-gradient(180deg, rgba(184,75,58,.18), rgba(255,255,255,.03))}
-    .score-btn.bull{background:linear-gradient(180deg, rgba(214,169,79,.20), rgba(255,255,255,.03))}
-    .score-btn.undo{
-      background:linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
-    }
-
-    .throw-log{
-      margin-top:18px;
-      padding:16px;
-      border-radius:18px;
-      background:rgba(0,0,0,.18);
-      border:1px solid var(--line);
-      min-height:84px;
-    }
-
-    .throw-log h4{
-      margin:0 0 10px;
-      font-size:.95rem;
-      color:var(--muted);
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-
-    .throws{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .throw-pill{
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--line);
-      font-size:.9rem;
-      font-weight:700;
-    }
-
-    .scoreboard{
-      width:100%;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:18px;
-      background:rgba(0,0,0,.16);
-      border:1px solid var(--line);
-    }
-    .scoreboard th,
-    .scoreboard td{
-      padding:14px 12px;
-      text-align:left;
-      border-bottom:1px solid rgba(240,220,170,.08);
-      font-size:.94rem;
-    }
-    .scoreboard th{
-      color:var(--muted);
-      font-size:.78rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-weight:800;
-      background:rgba(255,255,255,.03);
-    }
-    .scoreboard tr:last-child td{border-bottom:none}
-    .scoreboard tr.active-row td{
-      background:rgba(214,169,79,.08);
-    }
-    .scoreboard td strong{
-      font-size:1rem;
-    }
-
-    .ranking{
-      margin-top:18px;
-      display:grid;
-      gap:10px;
-    }
-    .rank-row{
-      display:grid;
-      grid-template-columns:72px 1fr auto;
-      gap:14px;
-      align-items:center;
-      padding:14px 16px;
-      border-radius:18px;
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
-      border:1px solid var(--line);
-    }
-    .medal{
-      font-family:"Cinzel", serif;
-      color:var(--gold-2);
-      font-size:1rem;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-    }
-    .rank-row .name{
-      font-weight:800;
-      font-size:1rem;
-    }
-    .rank-row .score{
-      font-weight:900;
-      font-size:1.1rem;
-    }
-
-    .overlay{
-      position:fixed;
-      inset:0;
-      display:grid;
-      place-items:center;
-      background:rgba(6,10,7,.55);
-      backdrop-filter:blur(8px);
-      z-index:50;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .28s ease;
-      padding:20px;
-    }
-    .overlay.show{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .flash-card{
-      width:min(720px, 100%);
-      padding:36px 28px;
-      border-radius:28px;
-      background:
-        radial-gradient(circle at top right, rgba(214,169,79,.18), transparent 26%),
-        linear-gradient(180deg, rgba(27,42,32,.98), rgba(15,23,18,.98));
-      border:1px solid rgba(240,220,170,.18);
-      box-shadow:0 30px 80px rgba(0,0,0,.45);
-      text-align:center;
-      transform:scale(.96);
-      transition:transform .28s ease;
-    }
-    .overlay.show .flash-card{transform:scale(1)}
-
-    .flash-card .mini{
-      color:var(--gold-2);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      font-size:.76rem;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-    .flash-card h4{
-      margin:0;
-      font-family:"Cinzel", serif;
-      font-size:clamp(2rem, 5vw, 4rem);
-      line-height:1;
-    }
-    .flash-card .score-line{
-      margin-top:12px;
-      font-size:clamp(1.15rem, 2vw, 1.5rem);
-      color:#f0e3bf;
-      font-weight:800;
-    }
-    .flash-card .sub{
-      margin-top:8px;
-      color:var(--muted);
-    }
-
-    .endgame{
-      margin-top:16px;
-      padding:16px;
-      border-radius:18px;
-      background:rgba(214,169,79,.08);
-      border:1px solid rgba(214,169,79,.18);
-      color:#f7ebc9;
-      display:none;
-    }
-    .endgame.show{display:block}
-
-    .footer-note{
-      margin-top:22px;
-      color:var(--muted);
-      font-size:.88rem;
-      text-align:center;
-    }
-
-    @media (max-width: 980px){
-      .hero,
-      .grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width: 720px){
-      .setup-grid,
-      .status-strip,
-      .score-controls{
-        grid-template-columns:1fr 1fr;
-      }
-      .rank-row{
-        grid-template-columns:56px 1fr auto;
-      }
-    }
-
-    @media (max-width: 560px){
-      .wrap{width:min(calc(100% - 20px), var(--max))}
-      .status-strip,
-      .setup-grid,
-      .score-controls{
-        grid-template-columns:1fr;
-      }
-      .add-player-row{
-        flex-direction:column;
-      }
-      .nav{
-        align-items:flex-start;
-        flex-direction:column;
-      }
-      .hero-copy h2{
-        max-width:12ch;
-      }
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <header class="reveal">
-    <div class="wrap nav">
-      <div class="brand">
-        <div class="crest" aria-hidden="true"></div>
-        <div>
-          <h1>Robin Hood</h1>
-          <small>6-Round Bullseye Dart Game</small>
+  <div class="container">
+    <h1>🎯 Dart Night Olympic Hub 🏁</h1>
+
+    <!-- 1. ROSTER & EVENT SETUP CARD -->
+    <div id="roster-card" class="card">
+      <h2>1. Tournament Setup</h2>
+      <div class="form-group">
+        <label>Players:</label>
+        <div id="player-inputs">
+          <div class="player-input-list"><input type="text" class="player-name" value="Alice"></div>
+          <div class="player-input-list"><input type="text" class="player-name" value="Bob"></div>
+          <div class="player-input-list"><input type="text" class="player-name" value="Charlie"></div>
+        </div>
+        <button type="button" class="btn" id="add-player-btn" style="background:#444; color:#fff;">+ Add Player</button>
+      </div>
+
+      <!-- EVENT INCLUSION SELECTION -->
+      <div class="form-group" style="margin-top: 20px;">
+        <label>Select Included Olympic Events:</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" class="event-checkbox" value="racetrack" checked>
+            <span>🏁 Race Track #1</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" class="event-checkbox" value="robinhood" checked>
+            <span>🏹 Robin Hood Darts</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" class="event-checkbox" value="basketball" checked>
+            <span>🏀 Basketball Darts</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" class="event-checkbox" value="golf" checked>
+            <span>⛳ Golf Darts</span>
+          </label>
         </div>
       </div>
-      <div class="pill" id="headerStatus">Waiting for players</div>
+
+      <button class="btn" id="start-tournament-btn">Start Event Olympics 🏅</button>
     </div>
-  </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <article class="hero-copy reveal">
-        <div class="eyebrow">Sherwood Tavern Rules</div>
-        <h2>Aim true. Avoid the Sheriff.</h2>
-        <p>
-          Each player throws <strong>3 darts per round</strong> across <strong>6 rounds</strong>. Hit closer to the bullseye to score more.
-          But beware: the Sheriff punishes <strong>triples</strong>, costing points. In <strong>Round 6</strong>, every throw is doubled.
-        </p>
-        <div class="rules-inline" aria-label="Scoring rules">
-          <span class="token">Miss 0</span>
-          <span class="token">Outer +1</span>
-          <span class="token">Inner +2</span>
-          <span class="token">Double +5</span>
-          <span class="token">Bull +6</span>
-          <span class="token">Double Bull +10</span>
-          <span class="token">Triple -2</span>
-          <span class="token">Round 6 ×2</span>
+    <!-- 2. HUB DASHBOARD & STANDINGS -->
+    <div id="dashboard-card" class="card hidden">
+      <h2>Olympic Standings</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Olympic Points</th>
+            <th>Events Played</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+      </table>
+
+      <h3 style="margin-top:25px;">Included Events Launcher</h3>
+      <div id="included-events-container">
+        <!-- Dynamically rendered based on chosen events -->
+      </div>
+    </div>
+
+    <!-- 3. EMBEDDED GAME ENGINE: RACE TRACK #1 -->
+    <div id="racetrack-game-card" class="card hidden">
+      <h2>🏁 Race Track #1 🏁</h2>
+      <div class="game-header">
+        <div>Round: <span id="round-num">1</span></div>
+        <div>Target Laps: <span id="target-laps">2</span></div>
+      </div>
+
+      <div id="active-player-banner" class="active-player-banner">PLAYER 1's TURN</div>
+
+      <h3>Current Lap Progress</h3>
+      <div class="track-container">
+        <div class="track-segment" id="seg-1"><div class="seg-title">Seg 1</div><div class="seg-req">30 Pts</div></div>
+        <div class="track-segment" id="seg-2"><div class="seg-title">Seg 2</div><div class="seg-req">51 Pts</div></div>
+        <div class="track-segment" id="seg-3"><div class="seg-title">Seg 3</div><div class="seg-req">75+ Pts</div></div>
+        <div class="track-segment" id="seg-4"><div class="seg-title">Seg 4</div><div class="seg-req">Same Color</div></div>
+        <div class="track-segment" id="seg-5"><div class="seg-title">Seg 5</div><div class="seg-req">130 (6 Darts)</div></div>
+        <div class="track-segment" id="seg-6"><div class="seg-title">Seg 6</div><div class="seg-req">175 (9 Darts)</div></div>
+      </div>
+
+      <div class="dart-display-container">
+        <div class="dart-display">
+          <div class="dart-box" id="dart-1">-</div>
+          <div class="dart-box" id="dart-2">-</div>
+          <div class="dart-box" id="dart-3">-</div>
         </div>
-      </article>
+        <div class="turn-total">Turn Total: <span id="turn-total-score">0</span></div>
+      </div>
 
-      <aside class="hero-side reveal" aria-label="Game status visual">
-        <div class="dartboard-wrap">
-          <div class="dartboard" aria-hidden="true"></div>
+      <div class="controls-grid">
+        <button class="btn-pad modifier" id="btn-double">DOUBLE</button>
+        <button class="btn-pad modifier" id="btn-triple">TRIPLE</button>
+        <button class="btn-pad action" id="btn-miss">MISS (0)</button>
+        <button class="btn-pad action" id="btn-undo" style="grid-column: span 2; background:#d32f2f;">UNDO</button>
+        <div id="number-buttons" style="display: contents;"></div>
+        <button class="btn-pad color-btn color-white" data-color="white">WHITE</button>
+        <button class="btn-pad color-btn color-red" data-color="red">RED</button>
+        <button class="btn-pad color-btn color-green" data-color="green">GREEN</button>
+        <button class="btn-pad color-btn color-black" data-color="black">BLACK</button>
+      </div>
+
+      <button class="btn advance-btn" id="btn-advance-turn" disabled>Advance Turn ➡️</button>
+
+      <h3 style="margin-top:25px;">Current Match Standings</h3>
+      <table>
+        <thead>
+          <tr><th>Player</th><th>Laps Completed</th><th>Current Segment</th><th>Total Rounds</th></tr>
+        </thead>
+        <tbody id="scoreboard-body"></tbody>
+      </table>
+    </div>
+
+    <!-- 4. EMBEDDED GAME ENGINE: ROBIN HOOD DARTS -->
+    <div id="robinhood-game-card" class="card hidden">
+      <h2>🏹 Robin Hood Darts 🏹</h2>
+      <div class="game-header">
+        <div>Round: <span id="rh-round-num">1</span> / <span id="rh-max-rounds">10</span></div>
+        <div>Target Segment: <strong style="color: var(--accent);" id="rh-target-segment">20</strong></div>
+      </div>
+
+      <div id="rh-active-banner" class="active-player-banner">PLAYER 1's TURN</div>
+
+      <div class="dart-display-container">
+        <div class="dart-display">
+          <div class="dart-box" id="rh-dart-1">-</div>
+          <div class="dart-box" id="rh-dart-2">-</div>
+          <div class="dart-box" id="rh-dart-3">-</div>
         </div>
-        <div class="round-banner">
-          <div>
-            <span>Current Progress</span>
-            <strong id="roundDisplay">Round 1 of 6</strong>
-          </div>
-          <div>
-            <span id="doubleRoundDisplay">Standard scoring</span>
-          </div>
+        <div class="turn-total">Turn Score: <span id="rh-turn-score">0</span></div>
+      </div>
+
+      <div class="controls-grid">
+        <button class="btn-pad modifier" id="rh-btn-double">DOUBLE</button>
+        <button class="btn-pad modifier" id="rh-btn-triple">TRIPLE</button>
+        <button class="btn-pad action" id="rh-btn-robin" style="background: #9c27b0;">ROBIN HOOD (50)</button>
+        <button class="btn-pad action" id="rh-btn-miss">MISS (0)</button>
+        <button class="btn-pad action" id="rh-btn-undo" style="background:#d32f2f;">UNDO</button>
+        <div id="rh-number-buttons" style="display: contents;"></div>
+      </div>
+
+      <button class="btn advance-btn" id="rh-btn-advance" disabled onclick="advanceRobinHoodTurn()">Advance Turn ➡️</button>
+
+      <h3 style="margin-top:25px;">Robin Hood Leaderboard</h3>
+      <table>
+        <thead>
+          <tr><th>Player</th><th>Total Points</th><th>Bullseye/Robin Hits</th></tr>
+        </thead>
+        <tbody id="rh-scoreboard-body"></tbody>
+      </table>
+    </div>
+
+    <!-- 5. EMBEDDED GAME ENGINE: BASKETBALL DARTS -->
+    <div id="basketball-game-card" class="card hidden">
+      <h2>🏀 Basketball Darts 🏀</h2>
+      <div class="game-header">
+        <div>Quarter: <span id="bb-quarter">Q1</span> / 4</div>
+        <div>Possession: <span id="bb-possession">1</span> / 6</div>
+      </div>
+
+      <div id="bb-active-banner" class="active-player-banner">PLAYER 1's TURN</div>
+
+      <div class="dart-display-container">
+        <div class="dart-display">
+          <div class="dart-box" id="bb-dart-1">-</div>
+          <div class="dart-box" id="bb-dart-2">-</div>
+          <div class="dart-box" id="bb-dart-3">-</div>
         </div>
-      </aside>
-    </section>
+        <div class="turn-total">Possession Points: <span id="bb-turn-score">0</span></div>
+      </div>
 
-    <section class="grid">
-      <section class="panel reveal" aria-labelledby="setupTitle">
-        <div class="section-title">
-          <div>
-            <h3 id="setupTitle">Players & Turn Control</h3>
-            <p>Add players, start the match, then score each dart throw.</p>
-          </div>
+      <p style="text-align: center; margin-bottom: 8px; font-weight: bold; color: var(--text-muted);">Select Shot Hit:</p>
+      <div class="controls-grid" id="bb-segment-buttons"></div>
+
+      <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <button class="btn-pad action" id="bb-btn-miss" style="flex:1;">MISS (0)</button>
+        <button class="btn-pad action" id="bb-btn-undo" style="flex:1; background:#d32f2f;">UNDO DART</button>
+      </div>
+
+      <button class="btn advance-btn" id="bb-btn-advance" disabled onclick="advanceBasketballTurn()">Advance Turn ➡️</button>
+
+      <h3 style="margin-top:25px;">Live Match Scoreboard</h3>
+      <table>
+        <thead>
+          <tr><th>Player</th><th>Total Points</th><th>Current Quarter</th></tr>
+        </thead>
+        <tbody id="bb-scoreboard-body"></tbody>
+      </table>
+    </div>
+
+    <!-- 6. EMBEDDED GAME ENGINE: GOLF DARTS -->
+    <div id="golf-game-card" class="card hidden">
+      <h2>⛳ Golf Darts ⛳</h2>
+      <div class="game-header">
+        <div>Hole: <span id="golf-current-hole">1</span> / <span id="golf-total-holes">9</span></div>
+        <div>Target Segment: <strong style="color: var(--accent);" id="golf-target-segment">1</strong></div>
+      </div>
+
+      <div id="golf-active-banner" class="active-player-banner">PLAYER 1's TURN</div>
+
+      <div class="dart-display-container">
+        <div class="dart-display">
+          <div class="dart-box" id="golf-dart-1">-</div>
+          <div class="dart-box" id="golf-dart-2">-</div>
+          <div class="dart-box" id="golf-dart-3">-</div>
         </div>
+        <div class="turn-total">Hole Score Kept: <span id="golf-best-score">5 (Bogey)</span></div>
+      </div>
 
-        <div class="setup-grid">
-          <div>
-            <label for="playerName">Player name</label>
-            <input id="playerName" type="text" placeholder="e.g. Marian" maxlength="20" />
-          </div>
-          <div>
-            <label for="maxPlayersHint">Game format</label>
-            <input id="maxPlayersHint" type="text" value="6 rounds · 3 darts each turn" disabled />
-          </div>
-        </div>
+      <p style="text-align: center; margin-bottom: 8px; font-weight: bold; color: var(--text-muted);">Record Dart Hit:</p>
+      <div class="score-buttons-grid">
+        <button class="golf-btn" onclick="recordGolfDart(1, 'Double (1 pt)')"><span>Double Ring</span><small style="opacity: 0.7;">1 pt (Hole-in-One)</small></button>
+        <button class="golf-btn" onclick="recordGolfDart(2, 'Triple (2 pts)')"><span>Triple Ring</span><small style="opacity: 0.7;">2 pts (Eagle)</small></button>
+        <button class="golf-btn" onclick="recordGolfDart(3, 'Inner Single (3 pts)')"><span>Inner Single</span><small style="opacity: 0.7;">3 pts (Birdie)</small></button>
+        <button class="golf-btn" onclick="recordGolfDart(4, 'Outer Single (4 pts)')"><span>Outer Single</span><small style="opacity: 0.7;">4 pts (Par)</small></button>
+        <button class="golf-btn miss-btn" onclick="recordGolfDart(5, 'Miss (5 pts)')"><span>Miss / Wrong Ring</span><small>5 pts (Bogey)</small></button>
+      </div>
 
-        <div class="add-player-row">
-          <button class="btn" id="addPlayerBtn" type="button">Add Player</button>
-          <button class="ghost-btn" id="startGameBtn" type="button">Start Game</button>
-          <button class="ghost-btn" id="resetGameBtn" type="button">Reset Match</button>
-        </div>
+      <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <button class="btn-pad action" id="golf-btn-undo" style="flex:1; background:#d32f2f;">UNDO DART</button>
+      </div>
 
-        <div class="players-list" id="playersList" aria-live="polite"></div>
+      <button class="btn advance-btn" id="golf-btn-advance" disabled onclick="advanceGolfTurn()">Advance Turn ➡️</button>
 
-        <div class="status-strip">
-          <div class="stat">
-            <span class="k">Current Player</span>
-            <div class="v" id="currentPlayerDisplay">—</div>
-          </div>
-          <div class="stat">
-            <span class="k">Turn Darts</span>
-            <div class="v" id="dartsDisplay">0 / 3</div>
-          </div>
-          <div class="stat">
-            <span class="k">Turn Total</span>
-            <div class="v" id="turnTotalDisplay">0</div>
-          </div>
-        </div>
+      <h3 style="margin-top:25px;">Golf Scorecard (Lowest Score Wins)</h3>
+      <table>
+        <thead>
+          <tr><th>Player</th><th>Total Score</th><th>Current Hole Score</th></tr>
+        </thead>
+        <tbody id="golf-scoreboard-body"></tbody>
+      </table>
+    </div>
 
-        <div class="score-controls" aria-label="Scoring buttons">
-          <button class="score-btn" data-score="0" data-label="Miss" type="button">
-            <strong>Miss</strong>
-            <span>0 points</span>
-          </button>
-          <button class="score-btn bull" data-score="10" data-label="Double Bull" type="button">
-            <strong>Double Bull</strong>
-            <span>+10 points</span>
-          </button>
-          <button class="score-btn bull" data-score="6" data-label="Bull" type="button">
-            <strong>Bull</strong>
-            <span>+6 points</span>
-          </button>
-          <button class="score-btn good" data-score="5" data-label="Double" type="button">
-            <strong>Double</strong>
-            <span>+5 points</span>
-          </button>
-          <button class="score-btn good" data-score="2" data-label="Inner" type="button">
-            <strong>Inner</strong>
-            <span>+2 points</span>
-          </button>
-          <button class="score-btn bad" data-score="-2" data-label="Triple" type="button">
-            <strong>Triple</strong>
-            <span>-2 points</span>
-          </button>
-          <button class="score-btn good" data-score="1" data-label="Outer" type="button">
-            <strong>Outer</strong>
-            <span>+1 point</span>
-          </button>
-          <button class="score-btn undo" id="undoBtn" type="button">
-            <strong>Undo</strong>
-            <span>Remove last throw</span>
-          </button>
-        </div>
-
-        <div class="throw-log">
-          <h4>Current turn throws</h4>
-          <div class="throws" id="throwsDisplay">
-            <span class="throw-pill">No throws yet</span>
-          </div>
-        </div>
-
-        <div class="endgame" id="endgameBanner">
-          The match is complete. Final rankings are shown on the scoreboard in descending order.
-        </div>
-      </section>
-
-      <section class="panel reveal" aria-labelledby="scoreboardTitle">
-        <div class="section-title">
-          <div>
-            <h3 id="scoreboardTitle">Scoreboard</h3>
-            <p>Live totals update after every completed turn.</p>
-          </div>
-        </div>
-
-        <div style="overflow:auto;">
-          <table class="scoreboard" aria-describedby="scoreboardTitle">
-            <thead>
-              <tr>
-                <th>Player</th>
-                <th>Total</th>
-                <th>Round</th>
-                <th>Turn</th>
-                <th>Thrown</th>
-              </tr>
-            </thead>
-            <tbody id="scoreboardBody">
-              <tr>
-                <td colspan="5" style="color:var(--muted); text-align:center;">Add players to begin.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="ranking" id="rankingList" aria-live="polite"></div>
-        <p class="footer-note">Tip: Round 6 doubles every throw, including Triple penalties.</p>
-      </section>
-    </section>
-  </main>
-
-  <div class="overlay" id="flashOverlay" aria-live="assertive" aria-modal="true" role="dialog">
-    <div class="flash-card">
-      <div class="mini">Turn Complete</div>
-      <h4 id="flashPlayerName">Player</h4>
-      <div class="score-line" id="flashRoundTotal">Round Total: 0</div>
-      <div class="sub" id="flashSubtext">Prepare for the next archer.</div>
+    <!-- 7. EVENT OVERLAY REWARD SCREEN -->
+    <div id="event-result-card" class="card hidden">
+      <h2>🏆 Event Finished! 🏆</h2>
+      <div id="event-winner-announcement" style="text-align: center; font-size: 1.5rem; margin: 15px 0; color: #ffeb3b;"></div>
+      
+      <h3>Event Placements & Awarded Olympic Points</h3>
+      <table>
+        <thead>
+          <tr><th>Placement</th><th>Player</th><th>Grand Prix Points</th></tr>
+        </thead>
+        <tbody id="event-points-body"></tbody>
+      </table>
+      <br>
+      <button class="btn" onclick="returnToDashboard()">Return to Hub Standings 📊</button>
     </div>
   </div>
 
   <script>
-    const state = {
-      players: [],
-      started: false,
-      currentPlayerIndex: 0,
+    /* ==========================================================
+       HUB STATE & MANAGEMENT
+       ========================================================== */
+    let tournamentPlayers = []; 
+    let selectedEvents = [];
+    const pointsMap = [10, 7, 5, 3, 2, 1];
+
+    const rosterCard = document.getElementById('roster-card');
+    const dashboardCard = document.getElementById('dashboard-card');
+    const racetrackGameCard = document.getElementById('racetrack-game-card');
+    const robinhoodGameCard = document.getElementById('robinhood-game-card');
+    const basketballGameCard = document.getElementById('basketball-game-card');
+    const golfGameCard = document.getElementById('golf-game-card');
+    const eventResultCard = document.getElementById('event-result-card');
+
+    document.getElementById('add-player-btn').addEventListener('click', () => {
+      const container = document.getElementById('player-inputs');
+      const count = container.children.length + 1;
+      const div = document.createElement('div');
+      div.className = 'player-input-list';
+      div.innerHTML = `<input type="text" class="player-name" value="Player ${count}">`;
+      container.appendChild(div);
+    });
+
+    document.getElementById('start-tournament-btn').addEventListener('click', () => {
+      const inputs = document.querySelectorAll('.player-name');
+      const names = Array.from(inputs).map(i => i.value.trim()).filter(n => n !== '');
+      if (names.length < 2) return alert('Please enter at least 2 players.');
+
+      const checkedBoxes = document.querySelectorAll('.event-checkbox:checked');
+      selectedEvents = Array.from(checkedBoxes).map(cb => cb.value);
+
+      if (selectedEvents.length === 0) {
+        return alert('Please select at least one event to include in the tournament.');
+      }
+      
+      tournamentPlayers = names.map(name => ({ name: name, points: 0, eventsPlayed: 0 }));
+      rosterCard.classList.add('hidden');
+      dashboardCard.classList.remove('hidden');
+      renderIncludedEventsUI();
+      renderHubLeaderboard();
+    });
+
+    function renderIncludedEventsUI() {
+      const container = document.getElementById('included-events-container');
+      container.innerHTML = '';
+
+      if (selectedEvents.includes('racetrack')) {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        div.style.marginTop = '15px';
+        div.innerHTML = `
+          <label for="laps-input">Race Track Target Laps:</label>
+          <input type="number" id="laps-input" min="1" max="10" value="2">
+          <button class="btn" style="margin-top:8px;" onclick="launchRaceTrack()">🏁 Launch Event: Race Track #1</button>
+        `;
+        container.appendChild(div);
+      }
+
+      if (selectedEvents.includes('robinhood')) {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        div.style.marginTop = '20px';
+        div.innerHTML = `
+          <label for="rh-rounds-input">Robin Hood Max Rounds:</label>
+          <input type="number" id="rh-rounds-input" min="5" max="20" value="10">
+          <button class="btn" style="background: #9c27b0; color: white; margin-top:8px;" onclick="launchRobinHood()">🏹 Launch Event: Robin Hood Darts</button>
+        `;
+        container.appendChild(div);
+      }
+
+      if (selectedEvents.includes('basketball')) {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        div.style.marginTop = '20px';
+        div.innerHTML = `
+          <label for="bb-board-type">Basketball Board Type:</label>
+          <select id="bb-board-type">
+            <option value="basic">Basic Board (Bull=6, D=5, T=4, Outer=3, Inner=2)</option>
+            <option value="quad">Quad Board (Bull=10, D=9, T=7, Quad=5, Outer=4, Mid=3, Inner=2)</option>
+          </select>
+          <button class="btn" style="background: #2196F3; color: white; margin-top:8px;" onclick="launchBasketball()">🏀 Launch Event: Basketball Darts</button>
+        `;
+        container.appendChild(div);
+      }
+
+      if (selectedEvents.includes('golf')) {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        div.style.marginTop = '20px';
+        div.innerHTML = `
+          <label for="golf-holes-input">Golf Darts Game Mode:</label>
+          <select id="golf-holes-input">
+            <option value="9">9 Holes (Holes 1–9)</option>
+            <option value="18">18 Holes (Holes 1–18)</option>
+          </select>
+          <button class="btn" style="background: #2e7d32; color: white; margin-top:8px;" onclick="launchGolf()">⛳ Launch Event: Golf Darts</button>
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    function renderHubLeaderboard() {
+      tournamentPlayers.sort((a, b) => b.points - a.points);
+      const body = document.getElementById('leaderboard-body');
+      body.innerHTML = '';
+      tournamentPlayers.forEach((p, idx) => {
+        const tr = document.createElement('tr');
+        let rankClass = idx === 0 ? 'rank-1' : idx === 1 ? 'rank-2' : idx === 2 ? 'rank-3' : '';
+        tr.innerHTML = `
+          <td class="${rankClass}">#${idx + 1}</td>
+          <td>${p.name}</td>
+          <td><strong>${p.points} pts</strong></td>
+          <td>${p.eventsPlayed}</td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    function onEventFinished(sortedFinalResults) {
+      racetrackGameCard.classList.add('hidden');
+      robinhoodGameCard.classList.add('hidden');
+      basketballGameCard.classList.add('hidden');
+      golfGameCard.classList.add('hidden');
+      eventResultCard.classList.remove('hidden');
+
+      document.getElementById('event-winner-announcement').innerText = `Winner: ${sortedFinalResults[0].name}!`;
+      const pointsBody = document.getElementById('event-points-body');
+      pointsBody.innerHTML = '';
+
+      sortedFinalResults.forEach((result, idx) => {
+        const ptsAwarded = pointsMap[idx] || 1;
+        const playerObj = tournamentPlayers.find(p => p.name === result.name);
+        if (playerObj) {
+          playerObj.points += ptsAwarded;
+          playerObj.eventsPlayed += 1;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>#${idx + 1}</td>
+          <td>${result.name}</td>
+          <td><strong>+${ptsAwarded} pts</strong></td>
+        `;
+        pointsBody.appendChild(tr);
+      });
+    }
+
+    function returnToDashboard() {
+      eventResultCard.classList.add('hidden');
+      dashboardCard.classList.remove('hidden');
+      renderHubLeaderboard();
+    }
+
+    /* ==========================================================
+       EMBEDDED GAME ENGINE: RACE TRACK #1
+       ========================================================== */
+    let totalLaps = 2;
+    let rtPlayers = [];
+    let rtCurrentPlayerIndex = 0;
+    let rtCurrentRound = 1;
+    let isDouble = false;
+    let isTriple = false;
+
+    const numberButtonsContainer = document.getElementById('number-buttons');
+    const activePlayerBanner = document.getElementById('active-player-banner');
+    const roundNumDisplay = document.getElementById('round-num');
+    const targetLapsDisplay = document.getElementById('target-laps');
+    const turnTotalScoreDisplay = document.getElementById('turn-total-score');
+    const btnDouble = document.getElementById('btn-double');
+    const btnTriple = document.getElementById('btn-triple');
+    const btnMiss = document.getElementById('btn-miss');
+    const btnUndo = document.getElementById('btn-undo');
+    const btnAdvanceTurn = document.getElementById('btn-advance-turn');
+    const colorButtons = document.querySelectorAll('.color-btn');
+
+    for (let i = 1; i <= 20; i++) createNumButton(i, i.toString());
+    createNumButton(50, 'BULL');
+
+    function createNumButton(val, label) {
+      const btn = document.createElement('button');
+      btn.className = 'btn-pad num-btn';
+      btn.innerText = label;
+      btn.dataset.value = val;
+      btn.addEventListener('click', () => handleDartInput({ type: 'number', value: val }));
+      numberButtonsContainer.appendChild(btn);
+    }
+
+    function launchRaceTrack() {
+      totalLaps = parseInt(document.getElementById('laps-input').value) || 2;
+      targetLapsDisplay.innerText = totalLaps;
+
+      rtPlayers = tournamentPlayers.map(p => ({
+        name: p.name,
+        lapsCompleted: 0,
+        currentSegment: 1,
+        totalRounds: 0,
+        currentDarts: [],
+        seg5Darts: 0, seg5Score: 0, seg6Darts: 0, seg6Score: 0, seg4Color: null
+      }));
+
+      rtCurrentPlayerIndex = 0;
+      rtCurrentRound = 1;
+      dashboardCard.classList.add('hidden');
+      racetrackGameCard.classList.remove('hidden');
+      updateRTUI();
+    }
+
+    btnDouble.addEventListener('click', () => { isDouble = !isDouble; if (isDouble) isTriple = false; updateModifiers(); });
+    btnTriple.addEventListener('click', () => { isTriple = !isTriple; if (isTriple) isDouble = false; updateModifiers(); });
+    colorButtons.forEach(btn => btn.addEventListener('click', () => handleDartInput({ type: 'color', value: btn.dataset.color })));
+    btnMiss.addEventListener('click', () => handleDartInput({ type: 'miss', value: 0 }));
+    btnUndo.addEventListener('click', undoDart);
+    btnAdvanceTurn.addEventListener('click', advanceRTTurn);
+
+    function updateModifiers() {
+      btnDouble.classList.toggle('active', isDouble);
+      btnTriple.classList.toggle('active', isTriple);
+    }
+
+    function handleDartInput(dart) {
+      const p = rtPlayers[rtCurrentPlayerIndex];
+      if (p.currentDarts.length >= 3) return;
+
+      let mult = isDouble ? 2 : isTriple ? 3 : 1;
+      let calcScore = dart.type === 'number' ? dart.value * mult : 0;
+
+      p.currentDarts.push({ ...dart, multiplier: mult, calculatedScore: calcScore });
+      isDouble = false; isTriple = false;
+      updateModifiers();
+      updateRTTurnDisplay();
+    }
+
+    function undoDart() {
+      const p = rtPlayers[rtCurrentPlayerIndex];
+      if (p.currentDarts.length > 0) { p.currentDarts.pop(); updateRTTurnDisplay(); }
+    }
+
+    function updateRTTurnDisplay() {
+      const p = rtPlayers[rtCurrentPlayerIndex];
+      const darts = p.currentDarts;
+      document.getElementById('dart-1').innerText = formatDart(darts[0]);
+      document.getElementById('dart-2').innerText = formatDart(darts[1]);
+      document.getElementById('dart-3').innerText = formatDart(darts[2]);
+
+      const sum = darts.reduce((a, b) => a + (b.calculatedScore || 0), 0);
+      turnTotalScoreDisplay.innerText = sum;
+      btnAdvanceTurn.disabled = darts.length < 3;
+    }
+
+    function formatDart(d) {
+      if (!d) return '-';
+      if (d.type === 'miss') return 'MISS';
+      if (d.type === 'color') return d.value.toUpperCase();
+      let prefix = d.multiplier === 2 ? 'D' : d.multiplier === 3 ? 'T' : '';
+      return `${prefix}${d.value}`;
+    }
+
+    function advanceRTTurn() {
+      const p = rtPlayers[rtCurrentPlayerIndex];
+      p.totalRounds++;
+      evaluatePlayerSegmentProgress(p);
+
+      p.currentDarts = [];
+      rtCurrentPlayerIndex++;
+
+      if (rtCurrentPlayerIndex >= rtPlayers.length) {
+        rtCurrentPlayerIndex = 0;
+        rtCurrentRound++;
+      }
+
+      const winner = rtPlayers.find(pl => pl.lapsCompleted >= totalLaps);
+      if (winner) {
+        const sorted = [...rtPlayers].sort((a, b) => {
+          if (b.lapsCompleted !== a.lapsCompleted) return b.lapsCompleted - a.lapsCompleted;
+          if (b.currentSegment !== a.currentSegment) return b.currentSegment - a.currentSegment;
+          return a.totalRounds - b.totalRounds;
+        });
+        onEventFinished(sorted);
+        return;
+      }
+
+      updateRTUI();
+    }
+
+    function evaluatePlayerSegmentProgress(p) {
+      for (let d of p.currentDarts) {
+        if (p.currentSegment === 1 && d.calculatedScore >= 30) advanceSegment(p);
+        else if (p.currentSegment === 2 && d.calculatedScore === 51) advanceSegment(p);
+        else if (p.currentSegment === 3 && d.calculatedScore >= 75) advanceSegment(p);
+        else if (p.currentSegment === 4 && d.type === 'color') {
+          if (!p.seg4Color) p.seg4Color = d.value;
+          else if (p.seg4Color === d.value) advanceSegment(p);
+        } else if (p.currentSegment === 5) {
+          p.seg5Darts++; p.seg5Score += d.calculatedScore;
+          if (p.seg5Score >= 130 && p.seg5Darts <= 6) advanceSegment(p);
+          else if (p.seg5Darts >= 6) { p.seg5Darts = 0; p.seg5Score = 0; }
+        } else if (p.currentSegment === 6) {
+          p.seg6Darts++; p.seg6Score += d.calculatedScore;
+          if (p.seg6Score >= 175 && p.seg6Darts <= 9) {
+            p.lapsCompleted++; p.currentSegment = 1; p.seg6Darts = 0; p.seg6Score = 0;
+          } else if (p.seg6Darts >= 9) { p.seg6Darts = 0; p.seg6Score = 0; }
+        }
+      }
+    }
+
+    function advanceSegment(p) { p.currentSegment++; p.seg4Color = null; p.seg5Darts = 0; p.seg5Score = 0; }
+
+    function updateRTUI() {
+      roundNumDisplay.innerText = rtCurrentRound;
+      const p = rtPlayers[rtCurrentPlayerIndex];
+      activePlayerBanner.innerText = `${p.name.toUpperCase()}'S TURN`;
+
+      for (let i = 1; i <= 6; i++) {
+        document.getElementById(`seg-${i}`).classList.toggle('completed', i < p.currentSegment);
+      }
+
+      updateRTTurnDisplay();
+      renderRTScoreboard();
+    }
+
+    function renderRTScoreboard() {
+      const body = document.getElementById('scoreboard-body');
+      body.innerHTML = '';
+      rtPlayers.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><strong>${p.name}</strong></td><td>${p.lapsCompleted} / ${totalLaps}</td><td>Seg ${p.currentSegment}</td><td>${p.totalRounds}</td>`;
+        body.appendChild(tr);
+      });
+    }
+
+    /* ==========================================================
+       EMBEDDED GAME ENGINE: ROBIN HOOD DARTS
+       ========================================================== */
+    let rhState = {
+      maxRounds: 10,
       currentRound: 1,
-      currentTurnThrows: [],
-      history: [],
-      gameOver: false
+      currentPlayerIndex: 0,
+      players: [],
+      isDouble: false,
+      isTriple: false
     };
 
-    const els = {
-      playerName: document.getElementById('playerName'),
-      addPlayerBtn: document.getElementById('addPlayerBtn'),
-      startGameBtn: document.getElementById('startGameBtn'),
-      resetGameBtn: document.getElementById('resetGameBtn'),
-      playersList: document.getElementById('playersList'),
-      currentPlayerDisplay: document.getElementById('currentPlayerDisplay'),
-      dartsDisplay: document.getElementById('dartsDisplay'),
-      turnTotalDisplay: document.getElementById('turnTotalDisplay'),
-      throwsDisplay: document.getElementById('throwsDisplay'),
-      scoreboardBody: document.getElementById('scoreboardBody'),
-      roundDisplay: document.getElementById('roundDisplay'),
-      doubleRoundDisplay: document.getElementById('doubleRoundDisplay'),
-      headerStatus: document.getElementById('headerStatus'),
-      undoBtn: document.getElementById('undoBtn'),
-      flashOverlay: document.getElementById('flashOverlay'),
-      flashPlayerName: document.getElementById('flashPlayerName'),
-      flashRoundTotal: document.getElementById('flashRoundTotal'),
-      flashSubtext: document.getElementById('flashSubtext'),
-      rankingList: document.getElementById('rankingList'),
-      endgameBanner: document.getElementById('endgameBanner')
-    };
+    const rhTargets = [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 50];
 
-    const scoreButtons = [...document.querySelectorAll('.score-btn[data-score]')];
+    function launchRobinHood() {
+      rhState.maxRounds = parseInt(document.getElementById('rh-rounds-input').value) || 10;
+      rhState.currentRound = 1;
+      rhState.currentPlayerIndex = 0;
+      rhState.players = tournamentPlayers.map(p => ({
+        name: p.name,
+        totalPoints: 0,
+        robinHits: 0,
+        currentTurnDarts: []
+      }));
 
-    function createPlayer(name){
-      return {
-        name,
-        score: 0,
-        rounds: [0,0,0,0,0,0]
+      setupRHButtons();
+      dashboardCard.classList.add('hidden');
+      robinhoodGameCard.classList.remove('hidden');
+      updateRobinHoodUI();
+    }
+
+    function setupRHButtons() {
+      const container = document.getElementById('rh-number-buttons');
+      container.innerHTML = '';
+      for (let i = 1; i <= 20; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'btn-pad num-btn';
+        btn.innerText = i.toString();
+        btn.onclick = () => recordRHDart({ type: 'num', value: i });
+        container.appendChild(btn);
+      }
+      const bullBtn = document.createElement('button');
+      bullBtn.className = 'btn-pad num-btn';
+      bullBtn.innerText = 'BULL';
+      bullBtn.onclick = () => recordRHDart({ type: 'num', value: 50 });
+      container.appendChild(bullBtn);
+
+      document.getElementById('rh-btn-double').onclick = () => {
+        rhState.isDouble = !rhState.isDouble;
+        if (rhState.isDouble) rhState.isTriple = false;
+        updateRHModifiers();
       };
+      document.getElementById('rh-btn-triple').onclick = () => {
+        rhState.isTriple = !rhState.isTriple;
+        if (rhState.isTriple) rhState.isDouble = false;
+        updateRHModifiers();
+      };
+      document.getElementById('rh-btn-robin').onclick = () => recordRHDart({ type: 'robin', value: 50 });
+      document.getElementById('rh-btn-miss').onclick = () => recordRHDart({ type: 'miss', value: 0 });
+      document.getElementById('rh-btn-undo').onclick = undoRHDart;
     }
 
-    function sanitizeName(name){
-      return name.trim().replace(/\s+/g, ' ').slice(0, 20);
+    function updateRHModifiers() {
+      document.getElementById('rh-btn-double').classList.toggle('active', rhState.isDouble);
+      document.getElementById('rh-btn-triple').classList.toggle('active', rhState.isTriple);
     }
 
-    function getRoundMultiplier(){
-      return state.currentRound === 6 ? 2 : 1;
+    function recordRHDart(dart) {
+      const player = rhState.players[rhState.currentPlayerIndex];
+      if (player.currentTurnDarts.length >= 3) return;
+
+      let mult = rhState.isDouble ? 2 : rhState.isTriple ? 3 : 1;
+      let targetVal = rhTargets[(rhState.currentRound - 1) % rhTargets.length];
+      let pts = 0;
+
+      if (dart.type === 'robin') {
+        pts = 50;
+      } else if (dart.type === 'num') {
+        if (dart.value === targetVal || targetVal === 50 && dart.value === 50) {
+          pts = dart.value * mult;
+        }
+      }
+
+      player.currentTurnDarts.push({ ...dart, multiplier: mult, pts: pts });
+      rhState.isDouble = false;
+      rhState.isTriple = false;
+      updateRHModifiers();
+      updateRHTurnDisplay();
     }
 
-    function getTurnTotal(){
-      return state.currentTurnThrows.reduce((sum, throwObj) => sum + throwObj.finalScore, 0);
+    function undoRHDart() {
+      const player = rhState.players[rhState.currentPlayerIndex];
+      if (player.currentTurnDarts.length > 0) {
+        player.currentTurnDarts.pop();
+        updateRHTurnDisplay();
+      }
     }
 
-    function addPlayer(){
-      if(state.started) return;
-      const name = sanitizeName(els.playerName.value);
-      if(!name) return;
+    function updateRHTurnDisplay() {
+      const player = rhState.players[rhState.currentPlayerIndex];
+      const darts = player.currentTurnDarts;
 
-      if(state.players.some(p => p.name.toLowerCase() === name.toLowerCase())){
-        alert('Player name already exists.');
+      document.getElementById('rh-dart-1').innerText = formatRHDart(darts[0]);
+      document.getElementById('rh-dart-2').innerText = formatRHDart(darts[1]);
+      document.getElementById('rh-dart-3').innerText = formatRHDart(darts[2]);
+
+      const sum = darts.reduce((a, b) => a + b.pts, 0);
+      document.getElementById('rh-turn-score').innerText = sum;
+      document.getElementById('rh-btn-advance').disabled = darts.length < 3;
+    }
+
+    function formatRHDart(d) {
+      if (!d) return '-';
+      if (d.type === 'miss') return 'MISS';
+      if (d.type === 'robin') return 'ROBIN (50)';
+      let prefix = d.multiplier === 2 ? 'D' : d.multiplier === 3 ? 'T' : '';
+      return `${prefix}${d.value} (${d.pts}pt)`;
+    }
+
+    function advanceRobinHoodTurn() {
+      const player = rhState.players[rhState.currentPlayerIndex];
+      const turnPts = player.currentTurnDarts.reduce((a, b) => a + b.pts, 0);
+      const robinCount = player.currentTurnDarts.filter(d => d.type === 'robin' || (d.type === 'num' && d.value === 50)).length;
+
+      player.totalPoints += turnPts;
+      player.robinHits += robinCount;
+      player.currentTurnDarts = [];
+
+      rhState.currentPlayerIndex++;
+      if (rhState.currentPlayerIndex >= rhState.players.length) {
+        rhState.currentPlayerIndex = 0;
+        rhState.currentRound++;
+      }
+
+      if (rhState.currentRound > rhState.maxRounds) {
+        const finalResults = [...rhState.players].sort((a, b) => b.totalPoints - a.totalPoints);
+        onEventFinished(finalResults);
         return;
       }
 
-      state.players.push(createPlayer(name));
-      els.playerName.value = '';
-      renderPlayers();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-      els.playerName.focus();
+      updateRobinHoodUI();
     }
 
-    function removePlayer(index){
-      if(state.started) return;
-      state.players.splice(index, 1);
-      renderPlayers();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
+    function updateRobinHoodUI() {
+      document.getElementById('rh-round-num').innerText = rhState.currentRound;
+      document.getElementById('rh-max-rounds').innerText = rhState.maxRounds;
+
+      let targetSeg = rhTargets[(rhState.currentRound - 1) % rhTargets.length];
+      document.getElementById('rh-target-segment').innerText = targetSeg === 50 ? 'BULLSEYE' : targetSeg;
+
+      const activePlayer = rhState.players[rhState.currentPlayerIndex];
+      document.getElementById('rh-active-banner').innerText = `${activePlayer.name.toUpperCase()}'S TURN`;
+
+      updateRHTurnDisplay();
+      renderRHScoreboard();
     }
 
-    function startGame(){
-      if(state.players.length < 1){
-        alert('Add at least one player.');
-        return;
-      }
-
-      state.started = true;
-      state.gameOver = false;
-      state.currentPlayerIndex = 0;
-      state.currentRound = 1;
-      state.currentTurnThrows = [];
-      state.history = [];
-
-      state.players.forEach(player => {
-        player.score = 0;
-        player.rounds = [0,0,0,0,0,0];
-      });
-
-      els.endgameBanner.classList.remove('show');
-      renderThrows();
-      renderPlayers();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    function resetMatch(){
-      state.players = [];
-      state.started = false;
-      state.currentPlayerIndex = 0;
-      state.currentRound = 1;
-      state.currentTurnThrows = [];
-      state.history = [];
-      state.gameOver = false;
-
-      els.playerName.value = '';
-      els.endgameBanner.classList.remove('show');
-
-      renderPlayers();
-      renderThrows();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    function renderPlayers(){
-      if(!state.players.length){
-        els.playersList.innerHTML = '';
-        return;
-      }
-
-      els.playersList.innerHTML = state.players.map((player, idx) => `
-        <span class="player-chip">
-          ${player.name}
-          ${state.started ? '' : `<button type="button" data-remove="${idx}" aria-label="Remove ${player.name}">×</button>`}
-        </span>
-      `).join('');
-
-      if(!state.started){
-        els.playersList.querySelectorAll('button[data-remove]').forEach(btn => {
-          btn.addEventListener('click', () => removePlayer(Number(btn.dataset.remove)));
-        });
-      }
-    }
-
-    function renderThrows(){
-      if(state.currentTurnThrows.length === 0){
-        els.throwsDisplay.innerHTML = `<span class="throw-pill">No throws yet</span>`;
-        return;
-      }
-
-      els.throwsDisplay.innerHTML = state.currentTurnThrows.map(t => {
-        const sign = t.finalScore > 0 ? '+' : '';
-        const doubledTag = t.multiplier === 2 ? ' ×2' : '';
-        return `<span class="throw-pill">${t.label} (${sign}${t.finalScore}${doubledTag})</span>`;
-      }).join('');
-    }
-
-    function renderScoreboard(){
-      if(state.players.length === 0){
-        els.scoreboardBody.innerHTML = `
-          <tr>
-            <td colspan="5" style="color:var(--muted); text-align:center;">Add players to begin.</td>
-          </tr>
-        `;
-        return;
-      }
-
-      els.scoreboardBody.innerHTML = state.players.map((player, idx) => {
-        const active = state.started && !state.gameOver && idx === state.currentPlayerIndex;
-        const turnTotal = active ? getTurnTotal() : 0;
-        const thrown = active ? state.currentTurnThrows.length : 0;
-
-        return `
-          <tr class="${active ? 'active-row' : ''}">
-            <td><strong>${player.name}</strong></td>
-            <td>${player.score}</td>
-            <td>${state.started || state.gameOver ? state.currentRound : '—'} / 6</td>
-            <td>${turnTotal}</td>
-            <td>${thrown} / 3</td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    function renderRanking(){
-      if(state.players.length === 0){
-        els.rankingList.innerHTML = '';
-        return;
-      }
-
-      const medals = ['1st', '2nd', '3rd'];
-      const sorted = [...state.players].sort((a, b) => b.score - a.score);
-
-      els.rankingList.innerHTML = sorted.map((player, index) => `
-        <div class="rank-row">
-          <div class="medal">${medals[index] || `#${index + 1}`}</div>
-          <div class="name">${player.name}</div>
-          <div class="score">${player.score}</div>
-        </div>
-      `).join('');
-    }
-
-    function updateStatus(){
-      els.roundDisplay.textContent = `Round ${state.currentRound} of 6`;
-      els.doubleRoundDisplay.textContent = state.currentRound === 6 ? 'Double Round active' : 'Standard scoring';
-
-      if(!state.started && !state.gameOver){
-        els.headerStatus.textContent = state.players.length
-          ? `${state.players.length} player(s) ready`
-          : 'Waiting for players';
-        els.currentPlayerDisplay.textContent = '—';
-        els.dartsDisplay.textContent = '0 / 3';
-        els.turnTotalDisplay.textContent = '0';
-        return;
-      }
-
-      if(state.gameOver){
-        els.headerStatus.textContent = 'Match complete';
-        els.currentPlayerDisplay.textContent = '—';
-        els.dartsDisplay.textContent = '0 / 3';
-        els.turnTotalDisplay.textContent = '0';
-        return;
-      }
-
-      const currentPlayer = state.players[state.currentPlayerIndex];
-      els.headerStatus.textContent = `${currentPlayer.name} throwing`;
-      els.currentPlayerDisplay.textContent = currentPlayer.name;
-      els.dartsDisplay.textContent = `${state.currentTurnThrows.length} / 3`;
-      els.turnTotalDisplay.textContent = String(getTurnTotal());
-    }
-
-    function showFlash(playerName, roundTotal){
-      els.flashPlayerName.textContent = playerName;
-      els.flashRoundTotal.textContent = `Round Total: ${roundTotal}`;
-
-      const nextPlayerIndex = state.currentPlayerIndex < state.players.length - 1
-        ? state.currentPlayerIndex + 1
-        : 0;
-
-      const nextName = state.players[nextPlayerIndex]?.name || 'next archer';
-      els.flashSubtext.textContent = `Prepare for ${nextName}.`;
-
-      els.flashOverlay.classList.add('show');
-      setTimeout(() => {
-        els.flashOverlay.classList.remove('show');
-      }, 900);
-    }
-
-    function advanceTurn(){
-      if(state.currentPlayerIndex < state.players.length - 1){
-        state.currentPlayerIndex += 1;
-      } else {
-        state.currentPlayerIndex = 0;
-        state.currentRound += 1;
-      }
-
-      if(state.currentRound > 6){
-        state.currentRound = 6;
-        state.started = false;
-        state.gameOver = true;
-        state.currentTurnThrows = [];
-        els.endgameBanner.classList.add('show');
-      } else {
-        state.currentTurnThrows = [];
-      }
-    }
-
-    function commitTurn(){
-      const player = state.players[state.currentPlayerIndex];
-      const roundIdx = state.currentRound - 1;
-      const turnTotal = getTurnTotal();
-
-      player.score += turnTotal;
-      player.rounds[roundIdx] += turnTotal;
-
-      state.history.push({
-        playerIndex: state.currentPlayerIndex,
-        round: state.currentRound,
-        throws: state.currentTurnThrows.map(t => ({ ...t })),
-        turnTotal
-      });
-
-      showFlash(player.name, turnTotal);
-      advanceTurn();
-      renderThrows();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    function addThrow(baseScore, label){
-      if(!state.started || state.gameOver) return;
-      if(state.currentTurnThrows.length >= 3) return;
-
-      const multiplier = getRoundMultiplier(); // Round 6 => 2
-      const finalScore = baseScore * multiplier;
-
-      state.currentTurnThrows.push({
-        label,
-        baseScore,
-        multiplier,
-        finalScore
-      });
-
-      renderThrows();
-      renderScoreboard();
-      updateStatus();
-
-      if(state.currentTurnThrows.length === 3){
-        commitTurn();
-      }
-    }
-
-    function undoThrow(){
-      if(!state.started || state.gameOver) return;
-      if(state.currentTurnThrows.length === 0) return;
-
-      state.currentTurnThrows.pop();
-      renderThrows();
-      renderScoreboard();
-      updateStatus();
-    }
-
-    function bindEvents(){
-      els.addPlayerBtn.addEventListener('click', addPlayer);
-      els.startGameBtn.addEventListener('click', startGame);
-      els.resetGameBtn.addEventListener('click', resetMatch);
-      els.undoBtn.addEventListener('click', undoThrow);
-
-      els.playerName.addEventListener('keydown', (e) => {
-        if(e.key === 'Enter') addPlayer();
-      });
-
-      scoreButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const baseScore = Number(btn.dataset.score);
-          const label = btn.dataset.label || 'Throw';
-          addThrow(baseScore, label);
-        });
-      });
-
-      els.flashOverlay.addEventListener('click', () => {
-        els.flashOverlay.classList.remove('show');
+    function renderRHScoreboard() {
+      const body = document.getElementById('rh-scoreboard-body');
+      body.innerHTML = '';
+      rhState.players.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><strong>${p.name}</strong></td><td>${p.totalPoints} pts</td><td>${p.robinHits}</td>`;
+        body.appendChild(tr);
       });
     }
 
-    function init(){
-      bindEvents();
-      renderPlayers();
-      renderThrows();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
+    /* ==========================================================
+       EMBEDDED GAME ENGINE: BASKETBALL DARTS
+       ========================================================== */
+    const BB_SCORING = {
+      basic: [
+        { label: 'Bull (6)', pts: 6 }, { label: 'Double (5)', pts: 5 }, { label: 'Triple (4)', pts: 4 },
+        { label: 'Outer Single (3)', pts: 3 }, { label: 'Inner Single (2)', pts: 2 }
+      ],
+      quad: [
+        { label: 'Bull (10)', pts: 10 }, { label: 'Double (9)', pts: 9 }, { label: 'Triple (7)', pts: 7 },
+        { label: 'Quad (5)', pts: 5 }, { label: 'Outer Single (4)', pts: 4 }, { label: 'Middle Single (3)', pts: 3 }, { label: 'Inner Single (2)', pts: 2 }
+      ]
+    };
+
+    let bbState = { boardType: 'basic', players: [], currentPlayerIndex: 0, quarter: 1, possession: 1, currentTurnDarts: [] };
+
+    function launchBasketball() {
+      bbState.boardType = document.getElementById('bb-board-type').value;
+      bbState.players = tournamentPlayers.map(p => ({ name: p.name, totalPoints: 0, quarterPoints: 0 }));
+      bbState.currentPlayerIndex = 0; bbState.quarter = 1; bbState.possession = 1; bbState.currentTurnDarts = [];
+
+      renderBasketballButtons();
+      dashboardCard.classList.add('hidden');
+      basketballGameCard.classList.remove('hidden');
+      updateBasketballUI();
     }
 
-    init();
+    function renderBasketballButtons() {
+      const container = document.getElementById('bb-segment-buttons');
+      container.innerHTML = '';
+      BB_SCORING[bbState.boardType].forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-pad color-btn color-white';
+        btn.innerText = opt.label;
+        btn.onclick = () => recordBasketballDart(opt.pts);
+        container.appendChild(btn);
+      });
+    }
+
+    document.getElementById('bb-btn-miss').addEventListener('click', () => recordBasketballDart(0));
+    document.getElementById('bb-btn-undo').addEventListener('click', undoBasketballDart);
+
+    function recordBasketballDart(pts) {
+      if (bbState.currentTurnDarts.length >= 3) return;
+      bbState.currentTurnDarts.push(pts);
+      updateBasketballTurnDisplay();
+    }
+
+    function undoBasketballDart() {
+      if (bbState.currentTurnDarts.length > 0) { bbState.currentTurnDarts.pop(); updateBasketballTurnDisplay(); }
+    }
+
+    function updateBasketballTurnDisplay() {
+      const darts = bbState.currentTurnDarts;
+      document.getElementById('bb-dart-1').innerText = darts[0] !== undefined ? darts[0] : '-';
+      document.getElementById('bb-dart-2').innerText = darts[1] !== undefined ? darts[1] : '-';
+      document.getElementById('bb-dart-3').innerText = darts[2] !== undefined ? darts[2] : '-';
+
+      const sum = darts.reduce((a, b) => a + b, 0);
+      document.getElementById('bb-turn-score').innerText = sum;
+      document.getElementById('bb-btn-advance').disabled = darts.length < 3;
+    }
+
+    function advanceBasketballTurn() {
+      const turnTotal = bbState.currentTurnDarts.reduce((a, b) => a + b, 0);
+      const player = bbState.players[bbState.currentPlayerIndex];
+      player.totalPoints += turnTotal; player.quarterPoints += turnTotal;
+      bbState.currentTurnDarts = [];
+
+      bbState.currentPlayerIndex++;
+      if (bbState.currentPlayerIndex >= bbState.players.length) {
+        bbState.currentPlayerIndex = 0;
+        bbState.possession++;
+        if (bbState.possession > 6) {
+          bbState.possession = 1; bbState.quarter++;
+          bbState.players.forEach(p => p.quarterPoints = 0);
+        }
+      }
+
+      if (bbState.quarter > 4) {
+        const finalResults = [...bbState.players].sort((a, b) => b.totalPoints - a.totalPoints);
+        onEventFinished(finalResults);
+        return;
+      }
+
+      updateBasketballUI();
+    }
+
+    function updateBasketballUI() {
+      document.getElementById('bb-quarter').innerText = `Q${bbState.quarter}`;
+      document.getElementById('bb-possession').innerText = bbState.possession;
+      const activePlayer = bbState.players[bbState.currentPlayerIndex];
+      document.getElementById('bb-active-banner').innerText = `${activePlayer.name.toUpperCase()}'S TURN`;
+
+      updateBasketballTurnDisplay();
+      renderBasketballScoreboard();
+    }
+
+    function renderBasketballScoreboard() {
+      const body = document.getElementById('bb-scoreboard-body');
+      body.innerHTML = '';
+      bbState.players.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><strong>${p.name}</strong></td><td>${p.totalPoints} pts</td><td>${p.quarterPoints} pts</td>`;
+        body.appendChild(tr);
+      });
+    }
+
+    /* ==========================================================
+       EMBEDDED GAME ENGINE: GOLF DARTS
+       ========================================================== */
+    let golfState = { totalHoles: 9, currentHole: 1, currentPlayerIndex: 0, players: [] };
+
+    function launchGolf() {
+      const holesInput = parseInt(document.getElementById('golf-holes-input').value) || 9;
+      golfState.totalHoles = holesInput;
+      golfState.currentHole = 1;
+      golfState.currentPlayerIndex = 0;
+      golfState.players = tournamentPlayers.map(p => ({ name: p.name, totalScore: 0, currentHoleDarts: [], holeScores: [] }));
+
+      document.getElementById('golf-btn-undo').onclick = undoGolfDart;
+      dashboardCard.classList.add('hidden');
+      golfGameCard.classList.remove('hidden');
+      updateGolfUI();
+    }
+
+    function recordGolfDart(score, label) {
+      const player = golfState.players[golfState.currentPlayerIndex];
+      if (player.currentHoleDarts.length >= 3) return;
+      player.currentHoleDarts.push({ score, label });
+      updateGolfTurnDisplay();
+    }
+
+    function undoGolfDart() {
+      const player = golfState.players[golfState.currentPlayerIndex];
+      if (player.currentHoleDarts.length > 0) { player.currentHoleDarts.pop(); updateGolfTurnDisplay(); }
+    }
+
+    function updateGolfTurnDisplay() {
+      const player = golfState.players[golfState.currentPlayerIndex];
+      const darts = player.currentHoleDarts;
+
+      document.getElementById('golf-dart-1').innerText = darts[0] ? `${darts[0].score} pt` : '-';
+      document.getElementById('golf-dart-2').innerText = darts[1] ? `${darts[1].score} pt` : '-';
+      document.getElementById('golf-dart-3').innerText = darts[2] ? `${darts[2].score} pt` : '-';
+
+      let bestScore = 5;
+      if (darts.length > 0) bestScore = Math.min(...darts.map(d => d.score));
+
+      const scoreLabelMap = { 1: '1 (Hole-in-One)', 2: '2 (Eagle)', 3: '3 (Birdie)', 4: '4 (Par)', 5: '5 (Bogey)' };
+      document.getElementById('golf-best-score').innerText = scoreLabelMap[bestScore];
+      document.getElementById('golf-btn-advance').disabled = darts.length < 3;
+    }
+
+    function advanceGolfTurn() {
+      const player = golfState.players[golfState.currentPlayerIndex];
+      const darts = player.currentHoleDarts;
+
+      const holeScore = darts.length > 0 ? Math.min(...darts.map(d => d.score)) : 5;
+      player.totalScore += holeScore;
+      player.holeScores.push(holeScore);
+      player.currentHoleDarts = [];
+
+      golfState.currentPlayerIndex++;
+      if (golfState.currentPlayerIndex >= golfState.players.length) {
+        golfState.currentPlayerIndex = 0;
+        golfState.currentHole++;
+      }
+
+      if (golfState.currentHole > golfState.totalHoles) {
+        const finalResults = [...golfState.players].sort((a, b) => a.totalScore - b.totalScore);
+        onEventFinished(finalResults);
+        return;
+      }
+
+      updateGolfUI();
+    }
+
+    function updateGolfUI() {
+      document.getElementById('golf-current-hole').innerText = golfState.currentHole;
+      document.getElementById('golf-total-holes').innerText = golfState.totalHoles;
+      document.getElementById('golf-target-segment').innerText = golfState.currentHole;
+
+      const player = golfState.players[golfState.currentPlayerIndex];
+      document.getElementById('golf-active-banner').innerText = `${player.name.toUpperCase()}'S TURN`;
+
+      updateGolfTurnDisplay();
+      renderGolfScoreboard();
+    }
+
+    function renderGolfScoreboard() {
+      const body = document.getElementById('golf-scoreboard-body');
+      body.innerHTML = '';
+      golfState.players.forEach(p => {
+        const lastHoleScore = p.holeScores.length > 0 ? p.holeScores[p.holeScores.length - 1] : '-';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><strong>${p.name}</strong></td><td><strong>${p.totalScore} pts</strong></td><td>${lastHoleScore}</td>`;
+        body.appendChild(tr);
+      });
+    }
   </script>
 </body>
 </html>
