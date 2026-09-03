@@ -713,8 +713,41 @@
       <div class="sub" id="flashSubtext">Prepare for the next archer.</div>
     </div>
   </div>
-
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
   <script>
+    // Firebase Configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAZWDcVew9u-4wf-KH3JpNZlHK1IbL3hXw",
+  authDomain: "robinhoodmulti.firebaseapp.com",
+  projectId: "robinhoodmulti",
+  storageBucket: "robinhoodmulti.firebasestorage.app",
+  messagingSenderId: "515075611331",
+  appId: "1:515075611331:web:93d8a56a449f6256f16076",
+  databaseURL: "https://robinhoodmulti-default-rtdb.firebaseio.com"
+};
+
+// Initialize Firebase & Database Reference
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+const matchRef = database.ref('robinhood/currentMatch');
+
+// Helper to push game state changes to Firebase
+function syncGameState() {
+  matchRef.set(state);
+}
+
+// Real-time Listener: Updates state and UI when any connected device updates data
+matchRef.on('value', (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    Object.assign(state, data);
+    if (typeof renderPlayers === 'function') renderPlayers();
+    if (typeof renderScoreboard === 'function') renderScoreboard();
+    if (typeof renderRanking === 'function') renderRanking();
+    if (typeof updateStatus === 'function') updateStatus();
+  }
+});
     const state = {
       players: [],
       started: false,
