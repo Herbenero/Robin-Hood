@@ -713,7 +713,29 @@
       <div class="sub" id="flashSubtext">Prepare for the next archer.</div>
     </div>
   </div>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAZWDcVew9u-4wf-KH3JpNZlHK1IbL3hXw",
+    authDomain: "robinhoodmulti.firebaseapp.com",
+    projectId: "robinhoodmulti",
+    storageBucket: "robinhoodmulti.firebasestorage.app",
+    messagingSenderId: "515075611331",
+    appId: "1:515075611331:web:93d8a56a449f6256f16076",
+    measurementId: "G-9GWT14W7HW"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
   <script>
     const state = {
       players: [],
@@ -725,6 +747,19 @@
       gameOver: false,
       boardType: 'basic'
     };
+    const matchRef = database.ref('robinhood/currentMatch');
+
+matchRef.on('value', (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    // Update local state object and re-render UI
+    Object.assign(state, data);
+    renderPlayers();
+    renderScoreboard();
+    renderRanking();
+    updateStatus();
+  }
+});
 
     const els = {
       playerName: document.getElementById('playerName'),
@@ -772,6 +807,15 @@
       { label: 'Inner', score: 1, class: 'good' },
       { label: 'Outer', score: 2, class: 'good' }
     ];
+    function syncGameState() {
+  database.ref('robinhood/currentMatch').set({
+    players: state.players,
+    started: state.started,
+    currentPlayerIndex: state.currentPlayerIndex,
+    currentRound: state.currentRound,
+    gameOver: state.gameOver
+  });
+}
 
     function renderScoringInterface() {
       const isQuad = state.boardType === 'quad';
