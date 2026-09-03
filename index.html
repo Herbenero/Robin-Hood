@@ -715,450 +715,377 @@
   </div>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-  <script>
-    // Firebase Configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAZWDcVew9u-4wf-KH3JpNZlHK1IbL3hXw",
-  authDomain: "robinhoodmulti.firebaseapp.com",
-  projectId: "robinhoodmulti",
-  storageBucket: "robinhoodmulti.firebasestorage.app",
-  messagingSenderId: "515075611331",
-  appId: "1:515075611331:web:93d8a56a449f6256f16076",
-  databaseURL: "https://robinhoodmulti-default-rtdb.firebaseio.com"
-};
+<script>
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAZWDcVew9u-4wf-KH3JpNZlHK1IbL3hXw",
+    authDomain: "robinhoodmulti.firebaseapp.com",
+    projectId: "robinhoodmulti",
+    storageBucket: "robinhoodmulti.firebasestorage.app",
+    messagingSenderId: "515075611331",
+    appId: "1:515075611331:web:93d8a56a449f6256f16076",
+    databaseURL: "https://robinhoodmulti-default-rtdb.firebaseio.com"
+  };
 
-// Initialize Firebase & Database Reference
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-const matchRef = database.ref('robinhood/currentMatch');
+  // Initialize Firebase & Database Reference
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+  const matchRef = database.ref('robinhood/currentMatch');
 
-// Helper to push game state changes to Firebase
-function syncGameState() {
-  matchRef.set(state);
-}
-
-// Real-time Listener: Updates state and UI when any connected device updates data
-matchRef.on('value', (snapshot) => {
-  const data = snapshot.val();
-  if (data) {
-    Object.assign(state, data);
-    if (typeof renderPlayers === 'function') renderPlayers();
-    if (typeof renderScoreboard === 'function') renderScoreboard();
-    if (typeof renderRanking === 'function') renderRanking();
-    if (typeof updateStatus === 'function') updateStatus();
+  // Helper to push game state changes to Firebase
+  function syncGameState() {
+    matchRef.set(state);
   }
-});
-    const state = {
-      players: [],
-      started: false,
-      currentPlayerIndex: 0,
-      currentRound: 1,
-      currentTurnThrows: [],
-      history: [],
-      gameOver: false,
-      boardType: 'basic'
-    };
 
-    const els = {
-      playerName: document.getElementById('playerName'),
-      boardTypeSelect: document.getElementById('boardTypeSelect'),
-      addPlayerBtn: document.getElementById('addPlayerBtn'),
-      startGameBtn: document.getElementById('startGameBtn'),
-      resetGameBtn: document.getElementById('resetGameBtn'),
-      playersList: document.getElementById('playersList'),
-      currentPlayerDisplay: document.getElementById('currentPlayerDisplay'),
-      dartsDisplay: document.getElementById('dartsDisplay'),
-      turnTotalDisplay: document.getElementById('turnTotalDisplay'),
-      throwsDisplay: document.getElementById('throwsDisplay'),
-      scoreboardBody: document.getElementById('scoreboardBody'),
-      roundDisplay: document.getElementById('roundDisplay'),
-      doubleRoundDisplay: document.getElementById('doubleRoundDisplay'),
-      headerStatus: document.getElementById('headerStatus'),
-      flashOverlay: document.getElementById('flashOverlay'),
-      flashPlayerName: document.getElementById('flashPlayerName'),
-      flashRoundTotal: document.getElementById('flashRoundTotal'),
-      flashSubtext: document.getElementById('flashSubtext'),
-      rankingList: document.getElementById('rankingList'),
-      endgameBanner: document.getElementById('endgameBanner'),
-      scoreControls: document.getElementById('scoreControls'),
-      rulesTokens: document.getElementById('rulesTokens')
-    };
-
-    const basicScores = [
-      { label: 'Miss', score: 0, class: '' },
-      { label: 'Double Bull', score: 10, class: 'bull' },
-      { label: 'Bull', score: 6, class: 'bull' },
-      { label: 'Double', score: 8, class: 'good' },
-      { label: 'Inner', score: 1, class: 'good' },
-      { label: 'Triple', score: -2, class: 'bad' },
-      { label: 'Outer', score: 2, class: 'good' }
-    ];
-
-    const quadScores = [
-      { label: 'Miss', score: 0, class: '' },
-      { label: 'Double Bull', score: 10, class: 'bull' },
-      { label: 'Bull', score: 6, class: 'bull' },
-      { label: 'Quad', score: 5, class: 'good' },
-      { label: 'Double', score: 8, class: 'good' },
-      { label: 'Triple', score: -2, class: 'bad' },
-      { label: 'Middle', score: 3, class: 'good' },
-      { label: 'Inner', score: 1, class: 'good' },
-      { label: 'Outer', score: 2, class: 'good' }
-    ];
-
-    function renderScoringInterface() {
-      const isQuad = state.boardType === 'quad';
-      const items = isQuad ? quadScores : basicScores;
-
-      els.scoreControls.innerHTML = items.map(item => `
-        <button class="score-btn ${item.class}" data-score="${item.score}" data-label="${item.label}" type="button">
-          <strong>${item.label}</strong>
-          <span>${item.score >= 0 ? '+' : ''}${item.score} point${Math.abs(item.score) === 1 ? '' : 's'}</span>
-        </button>
-      `).join('') + `
-        <button class="score-btn undo" id="undoBtn" type="button">
-          <strong>Undo</strong>
-          <span>Remove last throw</span>
-        </button>
-      `;
-
-      els.rulesTokens.innerHTML = items.map(item => `
-        <span class="token">${item.label} ${item.score >= 0 ? '+' : ''}${item.score}</span>
-      `).join('') + `<span class="token">Round 6 ×2</span>`;
-
-      bindScoreButtons();
+  // Real-time Listener: Updates state and UI when any connected device updates data
+  matchRef.on('value', (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      Object.assign(state, data);
+      if (typeof renderPlayers === 'function') renderPlayers();
+      if (typeof renderScoreboard === 'function') renderScoreboard();
+      if (typeof renderRanking === 'function') renderRanking();
+      if (typeof updateStatus === 'function') updateStatus();
+      if (typeof renderThrows === 'function') renderThrows();
     }
+  });
 
-    function bindScoreButtons() {
-      const scoreButtons = [...document.querySelectorAll('.score-btn[data-score]')];
-      scoreButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          if (!state.started || state.gameOver) return;
-          if (state.currentTurnThrows.length >= 3) return;
+  const state = {
+    players: [],
+    started: false,
+    currentPlayerIndex: 0,
+    currentRound: 1,
+    currentTurnThrows: [],
+    history: [],
+    gameOver: false,
+    boardType: 'basic'
+  };
 
-          const baseScore = Number(btn.dataset.score);
-          const label = btn.dataset.label;
-          const mult = getRoundMultiplier();
-          const finalScore = baseScore * mult;
+  const els = {
+    playerName: document.getElementById('playerName'),
+    boardTypeSelect: document.getElementById('boardTypeSelect'),
+    addPlayerBtn: document.getElementById('addPlayerBtn'),
+    startGameBtn: document.getElementById('startGameBtn'),
+    resetGameBtn: document.getElementById('resetGameBtn'),
+    playersList: document.getElementById('playersList'),
+    currentPlayerDisplay: document.getElementById('currentPlayerDisplay'),
+    dartsDisplay: document.getElementById('dartsDisplay'),
+    turnTotalDisplay: document.getElementById('turnTotalDisplay'),
+    throwsDisplay: document.getElementById('throwsDisplay'),
+    scoreboardBody: document.getElementById('scoreboardBody'),
+    roundDisplay: document.getElementById('roundDisplay'),
+    doubleRoundDisplay: document.getElementById('doubleRoundDisplay'),
+    headerStatus: document.getElementById('headerStatus'),
+    flashOverlay: document.getElementById('flashOverlay'),
+    flashPlayerName: document.getElementById('flashPlayerName'),
+    flashRoundTotal: document.getElementById('flashRoundTotal'),
+    flashSubtext: document.getElementById('flashSubtext'),
+    rankingList: document.getElementById('rankingList'),
+    endgameBanner: document.getElementById('endgameBanner'),
+    scoreControls: document.getElementById('scoreControls'),
+    rulesTokens: document.getElementById('rulesTokens')
+  };
 
-          state.currentTurnThrows.push({ label, baseScore, multiplier: mult, finalScore });
-          renderThrows();
-          renderScoreboard();
-          updateStatus();
+  const basicScores = [
+    { label: 'Miss', score: 0, class: '' },
+    { label: 'Double Bull', score: 10, class: 'bull' },
+    { label: 'Bull', score: 6, class: 'bull' },
+    { label: 'Double', score: 8, class: 'good' },
+    { label: 'Inner', score: 1, class: 'good' },
+    { label: 'Triple', score: -2, class: 'bad' },
+    { label: 'Outer', score: 2, class: 'good' }
+  ];
 
-          if (state.currentTurnThrows.length === 3) {
-            setTimeout(completeTurn, 250);
-          }
-        });
-      });
+  const quadScores = [
+    { label: 'Miss', score: 0, class: '' },
+    { label: 'Double Bull', score: 10, class: 'bull' },
+    { label: 'Bull', score: 6, class: 'bull' },
+    { label: 'Quad', score: 5, class: 'good' },
+    { label: 'Double', score: 8, class: 'good' },
+    { label: 'Triple', score: -2, class: 'bad' },
+    { label: 'Middle', score: 3, class: 'good' },
+    { label: 'Inner', score: 1, class: 'good' },
+    { label: 'Outer', score: 2, class: 'good' }
+  ];
 
-      const undoBtn = document.getElementById('undoBtn');
-      if (undoBtn) {
-        undoBtn.addEventListener('click', handleUndo);
-      }
-    }
+  function renderScoringInterface() {
+    const isQuad = state.boardType === 'quad';
+    const items = isQuad ? quadScores : basicScores;
+    els.scoreControls.innerHTML = items.map(item => `
+      <button class="score-btn ${item.class}" data-score="${item.score}" data-label="${item.label}" type="button">
+        <strong>${item.label}</strong>
+        <span>${item.score >= 0 ? '+' : ''}${item.score} point${Math.abs(item.score) === 1 ? '' : 's'}</span>
+      </button>
+    `).join('') + `
+      <button class="score-btn undo" id="undoBtn" type="button">
+        <strong>Undo</strong>
+        <span>Remove last throw</span>
+      </button>
+    `;
+    els.rulesTokens.innerHTML = items.map(item => `
+      <span class="token">${item.label} ${item.score >= 0 ? '+' : ''}${item.score}</span>
+    `).join('') + `<span class="token">Round 6 ×2</span>`;
+    bindScoreButtons();
+  }
 
-    function createPlayer(name){
-      return { name, score: 0, rounds: [0,0,0,0,0,0] };
-    }
-
-    function sanitizeName(name){
-      return name.trim().replace(/\s+/g, ' ').slice(0, 20);
-    }
-
-    function getRoundMultiplier(){
-      return state.currentRound === 6 ? 2 : 1;
-    }
-
-    function getTurnTotal(){
-      return state.currentTurnThrows.reduce((sum, throwObj) => sum + throwObj.finalScore, 0);
-    }
-
-    function addPlayer(){
-      if(state.started) return;
-      const name = sanitizeName(els.playerName.value);
-      if(!name) return;
-
-      if(state.players.some(p => p.name.toLowerCase() === name.toLowerCase())){
-        alert('Player name already exists.');
-        return;
-      }
-
-      state.players.push(createPlayer(name));
-      els.playerName.value = '';
-      renderPlayers();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-      els.playerName.focus();
-    }
-
-    function removePlayer(index){
-      if(state.started) return;
-      state.players.splice(index, 1);
-      renderPlayers();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    function startGame(){
-      if(state.players.length < 1){
-        alert('Add at least one player.');
-        return;
-      }
-
-      state.started = true;
-      state.gameOver = false;
-      state.currentPlayerIndex = 0;
-      state.currentRound = 1;
-      state.currentTurnThrows = [];
-      state.history = [];
-
-      state.players.forEach(player => {
-        player.score = 0;
-        player.rounds = [0,0,0,0,0,0];
-      });
-
-      els.boardTypeSelect.disabled = true;
-      els.endgameBanner.classList.remove('show');
-
-      renderThrows();
-      renderPlayers();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    function resetMatch(){
-      state.players = [];
-      state.started = false;
-      state.currentPlayerIndex = 0;
-      state.currentRound = 1;
-      state.currentTurnThrows = [];
-      state.history = [];
-      state.gameOver = false;
-
-      els.playerName.value = '';
-      els.boardTypeSelect.disabled = false;
-      els.endgameBanner.classList.remove('show');
-
-      renderPlayers();
-      renderThrows();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    function renderPlayers(){
-      if(!state.players.length){
-        els.playersList.innerHTML = '';
-        return;
-      }
-
-      els.playersList.innerHTML = state.players.map((player, idx) => `
-        <span class="player-chip">
-          ${player.name}
-          ${state.started ? '' : `<button type="button" data-remove="${idx}" aria-label="Remove ${player.name}">×</button>`}
-        </span>
-      `).join('');
-
-      if(!state.started){
-        els.playersList.querySelectorAll('button[data-remove]').forEach(btn => {
-          btn.addEventListener('click', () => removePlayer(Number(btn.dataset.remove)));
-        });
-      }
-    }
-
-    function renderThrows(){
-      if(state.currentTurnThrows.length === 0){
-        els.throwsDisplay.innerHTML = `<span class="throw-pill">No throws yet</span>`;
-        return;
-      }
-
-      els.throwsDisplay.innerHTML = state.currentTurnThrows.map(t => {
-        const sign = t.finalScore > 0 ? '+' : '';
-        const doubledTag = t.multiplier === 2 ? ' ×2' : '';
-        return `<span class="throw-pill">${t.label} (${sign}${t.finalScore}${doubledTag})</span>`;
-      }).join('');
-    }
-
-    function renderScoreboard(){
-      if(state.players.length === 0){
-        els.scoreboardBody.innerHTML = `<tr><td colspan="5" style="color:var(--muted); text-align:center;">Add players to begin.</td></tr>`;
-        return;
-      }
-
-      els.scoreboardBody.innerHTML = state.players.map((player, idx) => {
-        const isActive = state.started && idx === state.currentPlayerIndex && !state.gameOver;
-        const currentRoundVal = state.currentRound;
-        const roundScore = player.rounds[currentRoundVal - 1] || 0;
-
-        return `
-          <tr class="${isActive ? 'active-row' : ''}">
-            <td><strong>${player.name}</strong> ${isActive ? '🎯' : ''}</td>
-            <td><strong>${player.score}</strong></td>
-            <td>R${state.currentRound}</td>
-            <td>+${isActive ? getTurnTotal() : roundScore}</td>
-            <td>${isActive ? state.currentTurnThrows.length : (player.rounds[currentRoundVal - 1] !== undefined ? 3 : 0)}/3</td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    function renderRanking(){
-      if(!state.started && state.players.length === 0){
-        els.rankingList.innerHTML = '';
-        return;
-      }
-
-      const sorted = [...state.players].sort((a,b) => b.score - a.score);
-      const medals = ['1st', '2nd', '3rd'];
-
-      els.rankingList.innerHTML = sorted.map((p, i) => `
-        <div class="rank-row">
-          <div class="medal">${medals[i] || `#${i+1}`}</div>
-          <div class="name">${p.name}</div>
-          <div class="score">${p.score} pts</div>
-        </div>
-      `).join('');
-    }
-
-    function updateStatus(){
-      if(!state.started){
-        els.headerStatus.textContent = 'Waiting for players';
-        els.currentPlayerDisplay.textContent = '—';
-        els.dartsDisplay.textContent = '0 / 3';
-        els.turnTotalDisplay.textContent = '0';
-        els.roundDisplay.textContent = 'Round 1 of 6';
-        els.doubleRoundDisplay.textContent = 'Standard scoring';
-        return;
-      }
-
-      if(state.gameOver){
-        els.headerStatus.textContent = 'Match Complete';
-        els.currentPlayerDisplay.textContent = 'Game Over';
-        els.dartsDisplay.textContent = '3 / 3';
-        els.turnTotalDisplay.textContent = '0';
-        return;
-      }
-
-      const activePlayer = state.players[state.currentPlayerIndex];
-      els.headerStatus.textContent = `Round ${state.currentRound} in progress`;
-      els.currentPlayerDisplay.textContent = activePlayer ? activePlayer.name : '—';
-      els.dartsDisplay.textContent = `${state.currentTurnThrows.length} / 3`;
-      els.turnTotalDisplay.textContent = getTurnTotal();
-      els.roundDisplay.textContent = `Round ${state.currentRound} of 6`;
-
-      if(state.currentRound === 6){
-        els.doubleRoundDisplay.textContent = 'DOUBLE POINTS ROUND';
-        els.doubleRoundDisplay.style.color = 'var(--gold-2)';
-      } else {
-        els.doubleRoundDisplay.textContent = 'Standard scoring';
-        els.doubleRoundDisplay.style.color = 'var(--muted)';
-      }
-    }
-
-    function showTurnFlash(playerName, turnTotal){
-      els.flashPlayerName.textContent = playerName;
-      els.flashRoundTotal.textContent = `Turn Score: ${turnTotal >= 0 ? '+' : ''}${turnTotal}`;
-      els.flashSubtext.textContent = state.gameOver ? 'Final results calculated!' : 'Next archer step up.';
-      els.flashOverlay.classList.add('show');
-
-      setTimeout(() => {
-        els.flashOverlay.classList.remove('show');
-      }, 1200);
-    }
-
-    function completeTurn(){
-      if(!state.started || state.gameOver) return;
-
-      // Save a snapshot before advancing state
-      state.history.push(JSON.parse(JSON.stringify({
-        players: state.players,
-        currentPlayerIndex: state.currentPlayerIndex,
-        currentRound: state.currentRound,
-        currentTurnThrows: state.currentTurnThrows,
-        gameOver: state.gameOver
-      })));
-
-      const activePlayer = state.players[state.currentPlayerIndex];
-      const turnTotal = getTurnTotal();
-
-      activePlayer.rounds[state.currentRound - 1] += turnTotal;
-      activePlayer.score += turnTotal;
-
-      showTurnFlash(activePlayer.name, turnTotal);
-
-      state.currentTurnThrows = [];
-
-      if(state.currentPlayerIndex + 1 < state.players.length){
-        state.currentPlayerIndex++;
-      } else {
-        if(state.currentRound < 6){
-          state.currentRound++;
-          state.currentPlayerIndex = 0;
-        } else {
-          state.gameOver = true;
-          els.endgameBanner.classList.add('show');
+  function bindScoreButtons() {
+    const scoreButtons = [...document.querySelectorAll('.score-btn[data-score]')];
+    scoreButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!state.started || state.gameOver) return;
+        if (state.currentTurnThrows.length >= 3) return;
+        const baseScore = Number(btn.dataset.score);
+        const label = btn.dataset.label;
+        const mult = getRoundMultiplier();
+        const finalScore = baseScore * mult;
+        state.currentTurnThrows.push({ label, baseScore, multiplier: mult, finalScore });
+        renderThrows();
+        renderScoreboard();
+        updateStatus();
+        syncGameState(); // Sync throw recorded
+        if (state.currentTurnThrows.length === 3) {
+          setTimeout(completeTurn, 250);
         }
-      }
-
-      renderThrows();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    function handleUndo(){
-      if (!state.started) return;
-
-      if (state.gameOver) {
-        state.gameOver = false;
-        els.endgameBanner.classList.remove('show');
-      }
-
-      // Case 1: Undo a throw within the current turn
-      if (state.currentTurnThrows.length > 0) {
-        state.currentTurnThrows.pop();
-      }
-      // Case 2: Undo into the previous turn or round
-      else if (state.history.length > 0) {
-        const previousState = state.history.pop();
-
-        state.players = previousState.players;
-        state.currentPlayerIndex = previousState.currentPlayerIndex;
-        state.currentRound = previousState.currentRound;
-        state.currentTurnThrows = previousState.currentTurnThrows;
-        state.gameOver = previousState.gameOver;
-
-        // Pop the last throw of that restored turn so user can re-throw
-        if (state.currentTurnThrows.length > 0) {
-          state.currentTurnThrows.pop();
-        }
-      }
-
-      renderThrows();
-      renderScoreboard();
-      renderRanking();
-      updateStatus();
-    }
-
-    els.addPlayerBtn.addEventListener('click', addPlayer);
-    els.playerName.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter') addPlayer();
+      });
     });
 
-    els.startGameBtn.addEventListener('click', startGame);
-    els.resetGameBtn.addEventListener('click', resetMatch);
+    const undoBtn = document.getElementById('undoBtn');
+    if (undoBtn) {
+      undoBtn.addEventListener('click', handleUndo);
+    }
+  }
 
-    els.boardTypeSelect.addEventListener('change', (e) => {
-      state.boardType = e.target.value;
-      renderScoringInterface();
-    });
+  function createPlayer(name) {
+    return { name, score: 0, rounds: [0,0,0,0,0,0] };
+  }
 
-    renderScoringInterface();
+  function sanitizeName(name) {
+    return name.trim().replace(/\s+/g, ' ').slice(0, 20);
+  }
+
+  function getRoundMultiplier() {
+    return state.currentRound === 6 ? 2 : 1;
+  }
+
+  function getTurnTotal() {
+    return state.currentTurnThrows.reduce((sum, throwObj) => sum + throwObj.finalScore, 0);
+  }
+
+  function addPlayer() {
+    if (state.started) return;
+    const name = sanitizeName(els.playerName.value);
+    if (!name) return;
+    if (state.players.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+      alert('Player name already exists.');
+      return;
+    }
+    state.players.push(createPlayer(name));
+    els.playerName.value = '';
+    renderPlayers();
+    renderScoreboard();
+    renderRanking();
     updateStatus();
-  </script>
+    syncGameState(); // Sync player added
+    els.playerName.focus();
+  }
+
+  function removePlayer(index) {
+    if (state.started) return;
+    state.players.splice(index, 1);
+    renderPlayers();
+    renderScoreboard();
+    renderRanking();
+    updateStatus();
+    syncGameState(); // Sync player removed
+  }
+
+  function startGame() {
+    if (state.players.length < 1) {
+      alert('Add at least one player.');
+      return;
+    }
+    state.started = true;
+    state.gameOver = false;
+    state.currentPlayerIndex = 0;
+    state.currentRound = 1;
+    state.currentTurnThrows = [];
+    state.history = [];
+    state.boardType = els.boardTypeSelect ? els.boardTypeSelect.value : 'basic';
+    state.players.forEach(player => {
+      player.score = 0;
+      player.rounds = [0,0,0,0,0,0];
+    });
+    if (els.boardTypeSelect) els.boardTypeSelect.disabled = true;
+    renderScoringInterface();
+    renderPlayers();
+    renderScoreboard();
+    renderRanking();
+    updateStatus();
+    syncGameState(); // Sync game started
+  }
+
+  function resetMatch() {
+    state.started = false;
+    state.gameOver = false;
+    state.currentPlayerIndex = 0;
+    state.currentRound = 1;
+    state.currentTurnThrows = [];
+    state.history = [];
+    state.players = [];
+    if (els.boardTypeSelect) els.boardTypeSelect.disabled = false;
+    renderScoringInterface();
+    renderPlayers();
+    renderScoreboard();
+    renderRanking();
+    updateStatus();
+    syncGameState(); // Sync match reset
+  }
+
+  function completeTurn() {
+    if (!state.started || state.gameOver) return;
+    const currentPlayer = state.players[state.currentPlayerIndex];
+    const turnTotal = getTurnTotal();
+    
+    currentPlayer.rounds[state.currentRound - 1] = turnTotal;
+    currentPlayer.score = currentPlayer.rounds.reduce((a, b) => a + b, 0);
+
+    showFlashOverlay(currentPlayer.name, turnTotal);
+
+    state.currentTurnThrows = [];
+    state.currentPlayerIndex++;
+
+    if (state.currentPlayerIndex >= state.players.length) {
+      state.currentPlayerIndex = 0;
+      state.currentRound++;
+      if (state.currentRound > 6) {
+        state.gameOver = true;
+        state.currentRound = 6;
+      }
+    }
+
+    renderThrows();
+    renderScoreboard();
+    renderRanking();
+    updateStatus();
+    syncGameState(); // Sync turn completed
+  }
+
+  function handleUndo() {
+    if (state.currentTurnThrows.length > 0) {
+      state.currentTurnThrows.pop();
+      renderThrows();
+      renderScoreboard();
+      updateStatus();
+      syncGameState(); // Sync undo action
+    }
+  }
+
+  function showFlashOverlay(playerName, turnTotal) {
+    els.flashPlayerName.textContent = playerName;
+    els.flashRoundTotal.textContent = `Round Total: ${turnTotal >= 0 ? '+' : ''}${turnTotal}`;
+    els.flashOverlay.classList.add('show');
+    setTimeout(() => {
+      els.flashOverlay.classList.remove('show');
+    }, 1800);
+  }
+
+  function renderPlayers() {
+    els.playersList.innerHTML = state.players.map((p, idx) => `
+      <span class="player-chip">
+        ${p.name}
+        ${!state.started ? `<button type="button" onclick="removePlayer(${idx})" aria-label="Remove player">&times;</button>` : ''}
+      </span>
+    `).join('');
+  }
+
+  function renderThrows() {
+    if (state.currentTurnThrows.length === 0) {
+      els.throwsDisplay.innerHTML = `<span class="throw-pill">No throws yet</span>`;
+      return;
+    }
+    els.throwsDisplay.innerHTML = state.currentTurnThrows.map(t => `
+      <span class="throw-pill">${t.label} (${t.finalScore >= 0 ? '+' : ''}${t.finalScore})</span>
+    `).join('');
+  }
+
+  function renderScoreboard() {
+    if (state.players.length === 0) {
+      els.scoreboardBody.innerHTML = `<tr><td colspan="5" style="color:var(--muted); text-align:center;">Add players to begin.</td></tr>`;
+      return;
+    }
+    els.scoreboardBody.innerHTML = state.players.map((p, idx) => {
+      const isActive = state.started && !state.gameOver && idx === state.currentPlayerIndex;
+      return `
+        <tr class="${isActive ? 'active-row' : ''}">
+          <td><strong>${p.name}</strong></td>
+          <td><strong>${p.score}</strong></td>
+          <td>R${state.currentRound}</td>
+          <td>${isActive ? getTurnTotal() : (p.rounds[state.currentRound - 1] || 0)}</td>
+          <td>${isActive ? state.currentTurnThrows.length : 0} / 3</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function renderRanking() {
+    if (state.players.length === 0) {
+      els.rankingList.innerHTML = '';
+      return;
+    }
+    const sorted = [...state.players].sort((a, b) => b.score - a.score);
+    const medals = ['1st', '2nd', '3rd'];
+    els.rankingList.innerHTML = sorted.map((p, idx) => `
+      <div class="rank-row">
+        <span class="medal">${medals[idx] || `${idx + 1}th`}</span>
+        <span class="name">${p.name}</span>
+        <span class="score">${p.score} pts</span>
+      </div>
+    `).join('');
+  }
+
+  function updateStatus() {
+    if (!state.started) {
+      els.headerStatus.textContent = 'Waiting for players';
+      els.currentPlayerDisplay.textContent = '—';
+      els.dartsDisplay.textContent = '0 / 3';
+      els.turnTotalDisplay.textContent = '0';
+      els.roundDisplay.textContent = 'Round 1 of 6';
+      els.doubleRoundDisplay.textContent = 'Standard scoring';
+      els.endgameBanner.classList.remove('show');
+      return;
+    }
+
+    if (state.gameOver) {
+      els.headerStatus.textContent = 'Match Complete';
+      els.currentPlayerDisplay.textContent = 'Finished';
+      els.dartsDisplay.textContent = '3 / 3';
+      els.turnTotalDisplay.textContent = '—';
+      els.endgameBanner.classList.add('show');
+      return;
+    }
+
+    const currentP = state.players[state.currentPlayerIndex];
+    els.headerStatus.textContent = `Round ${state.currentRound} in progress`;
+    els.currentPlayerDisplay.textContent = currentP ? currentP.name : '—';
+    els.dartsDisplay.textContent = `${state.currentTurnThrows.length} / 3`;
+    els.turnTotalDisplay.textContent = getTurnTotal();
+    els.roundDisplay.textContent = `Round ${state.currentRound} of 6`;
+    els.doubleRoundDisplay.textContent = state.currentRound === 6 ? 'Double points round!' : 'Standard scoring';
+  }
+
+  // Event Listeners
+  els.addPlayerBtn.addEventListener('click', addPlayer);
+  els.startGameBtn.addEventListener('click', startGame);
+  els.resetGameBtn.addEventListener('click', resetMatch);
+  els.boardTypeSelect.addEventListener('change', () => {
+    state.boardType = els.boardTypeSelect.value;
+    renderScoringInterface();
+    syncGameState();
+  });
+
+  // Initial UI Render
+  renderScoringInterface();
+  updateStatus();
+</script>
 </body>
 </html>
