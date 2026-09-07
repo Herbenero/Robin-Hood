@@ -126,7 +126,6 @@
       <div class="pill" id="headerStatus">Waiting for players</div>
     </div>
   </header>
-
   <main class="wrap">
     <section class="hero">
       <article class="hero-copy reveal">
@@ -152,7 +151,6 @@
         </div>
       </aside>
     </section>
-
     <section class="grid">
       <section class="panel reveal" aria-labelledby="setupTitle">
         <div class="section-title">
@@ -205,7 +203,6 @@
           The match is complete. Final rankings are shown on the scoreboard in descending order.
         </div>
       </section>
-
       <section class="panel reveal" aria-labelledby="scoreboardTitle">
         <div class="section-title">
           <div>
@@ -236,7 +233,6 @@
       </section>
     </section>
   </main>
-
   <div class="overlay" id="flashOverlay" aria-live="assertive" aria-modal="true" role="dialog">
     <div class="flash-card">
       <div class="mini">Turn Complete</div>
@@ -296,7 +292,7 @@
           gameOver: data.gameOver || false,
           boardType: data.boardType || 'basic'
         };
-
+        els.boardTypeSelect.value = state.boardType;
         if (typeof renderScoringInterface === 'function') renderScoringInterface();
         if (typeof renderPlayers === 'function') renderPlayers();
         if (typeof renderScoreboard === 'function') renderScoreboard();
@@ -367,9 +363,11 @@
           <span>Remove last throw</span>
         </button>
       `;
+
       els.rulesTokens.innerHTML = items.map(item => `
         <span class="token">${item.label} ${item.score >= 0 ? '+' : ''}${item.score}</span>
       `).join('') + `<span class="token">Round 6 ×2</span>`;
+
       bindScoreButtons();
     }
 
@@ -387,7 +385,7 @@
           renderThrows();
           renderScoreboard();
           updateStatus();
-          syncGameState(); // Sync current throw
+          syncGameState();
           if (state.currentTurnThrows.length === 3) {
             setTimeout(completeTurn, 250);
           }
@@ -430,7 +428,7 @@
       renderScoreboard();
       renderRanking();
       updateStatus();
-      syncGameState(); // Sync added player
+      syncGameState();
       els.playerName.focus();
     }
 
@@ -441,7 +439,7 @@
       renderScoreboard();
       renderRanking();
       updateStatus();
-      syncGameState(); // Sync player removal
+      syncGameState();
     }
 
     function startGame() {
@@ -455,99 +453,109 @@
       state.currentRound = 1;
       state.currentTurnThrows = [];
       state.history = [];
-      state.boardType = els.boardTypeSelect ? els.boardTypeSelect.value : 'basic';
-      state.players.forEach(player => {
-        player.score = 0;
-        player.rounds = [0,0,0,0,0,0];
+      state.boardType = els.boardTypeSelect.value;
+      state.players.forEach(p => {
+        p.score = 0;
+        p.rounds = [0,0,0,0,0,0];
       });
-      if (els.boardTypeSelect) els.boardTypeSelect.disabled = true;
       renderScoringInterface();
       renderPlayers();
       renderScoreboard();
       renderRanking();
+      renderThrows();
       updateStatus();
-      syncGameState(); // Sync game start
+      syncGameState();
     }
 
-    function resetMatch() {
+    function resetGame() {
       state.started = false;
       state.gameOver = false;
       state.currentPlayerIndex = 0;
       state.currentRound = 1;
       state.currentTurnThrows = [];
       state.history = [];
-      state.players = [];
-      if (els.boardTypeSelect) els.boardTypeSelect.disabled = false;
+      state.players.forEach(p => {
+        p.score = 0;
+        p.rounds = [0,0,0,0,0,0];
+      });
       renderScoringInterface();
       renderPlayers();
       renderScoreboard();
       renderRanking();
-      updateStatus();
-      syncGameState(); // Sync match reset
-    }
-
-    function completeTurn() {
-      if (!state.started || state.gameOver) return;
-      const currentPlayer = state.players[state.currentPlayerIndex];
-      const turnTotal = getTurnTotal();
-      
-      if (currentPlayer && currentPlayer.rounds) {
-        currentPlayer.rounds[state.currentRound - 1] = turnTotal;
-        currentPlayer.score = currentPlayer.rounds.reduce((a, b) => a + b, 0);
-      }
-
-      showFlashOverlay(currentPlayer ? currentPlayer.name : 'Player', turnTotal);
-
-      state.currentTurnThrows = [];
-      state.currentPlayerIndex++;
-
-      if (state.currentPlayerIndex >= state.players.length) {
-        state.currentPlayerIndex = 0;
-        state.currentRound++;
-        if (state.currentRound > 6) {
-          state.gameOver = true;
-          state.currentRound = 6;
-        }
-      }
-
       renderThrows();
-      renderScoreboard();
-      renderRanking();
       updateStatus();
-      syncGameState(); // Sync completed turn to Firebase
+      syncGameState();
     }
 
     function handleUndo() {
+      if (!state.started || state.gameOver) return;
       if (state.currentTurnThrows.length > 0) {
         state.currentTurnThrows.pop();
         renderThrows();
         renderScoreboard();
         updateStatus();
-        syncGameState(); // Sync undo
+        syncGameState();
       }
     }
 
-    function showFlashOverlay(playerName, turnTotal) {
-      els.flashPlayerName.textContent = playerName;
-      els.flashRoundTotal.textContent = `Round Total: ${turnTotal >= 0 ? '+' : ''}${turnTotal}`;
+    function completeTurn() {
+      if (!state.started || state.gameOver) return;
+      const turnTotal = getTurnTotal();
+      const player = state.players[state.currentPlayerIndex];
+
+      player.rounds[state.currentRound - 1] = turnTotal;
+      player.score = player.rounds.reduce((a, b) => a + b, 0);
+
+      showFlashOverlay(player.name, turnTotal);
+
+      state.currentTurnThrows = [];
+
+      if (state.currentPlayerIndex < state.players.length - 1) {
+        state.currentPlayerIndex++;
+      } else {
+        state.currentPlayerIndex = 0;
+        if (state.currentRound < 6) {
+          state.currentRound++;
+        } else {
+          state.gameOver = true;
+        }
+      }
+
+      renderScoreboard();
+      renderRanking();
+      renderThrows();
+      updateStatus();
+      syncGameState();
+    }
+
+    function showFlashOverlay(name, total) {
+      els.flashPlayerName.textContent = name;
+      els.flashRoundTotal.textContent = `Round Total: ${total >= 0 ? '+' : ''}${total}`;
+      els.flashSubtext.textContent = state.currentRound === 6 && state.currentPlayerIndex === state.players.length - 1
+        ? 'Final round completed!'
+        : 'Prepare for the next archer.';
       els.flashOverlay.classList.add('show');
       setTimeout(() => {
         els.flashOverlay.classList.remove('show');
-      }, 1800);
+      }, 1600);
     }
 
     function renderPlayers() {
-      els.playersList.innerHTML = state.players.map((p, idx) => `
-        <span class="player-chip">
-          ${p.name}
-          ${!state.started ? `<button type="button" onclick="removePlayer(${idx})" aria-label="Remove player">&times;</button>` : ''}
-        </span>
+      if (state.players.length === 0) {
+        els.playersList.innerHTML = '<span style="color:var(--muted); font-size:.9rem;">No players added yet.</span>';
+        return;
+      }
+      els.playersList.innerHTML = state.players.map((p, i) => `
+        <div class="player-chip">
+          <span>${p.name}</span>
+          ${!state.started ? `<button type="button" onclick="removePlayer(${i})" title="Remove player">&times;</button>` : ''}
+        </div>
       `).join('');
     }
 
     function renderThrows() {
       if (state.currentTurnThrows.length === 0) {
-        els.throwsDisplay.innerHTML = `<span class="throw-pill">No throws yet</span>`;
+        els.throwsDisplay.innerHTML = '<span class="throw-pill">No throws yet</span>';
         return;
       }
       els.throwsDisplay.innerHTML = state.currentTurnThrows.map(t => `
@@ -557,18 +565,19 @@
 
     function renderScoreboard() {
       if (state.players.length === 0) {
-        els.scoreboardBody.innerHTML = `<tr><td colspan="5" style="color:var(--muted); text-align:center;">Add players to begin.</td></tr>`;
+        els.scoreboardBody.innerHTML = '<tr><td colspan="5" style="color:var(--muted); text-align:center;">Add players to begin.</td></tr>';
         return;
       }
-      els.scoreboardBody.innerHTML = state.players.map((p, idx) => {
-        const isActive = state.started && !state.gameOver && idx === state.currentPlayerIndex;
+      els.scoreboardBody.innerHTML = state.players.map((p, i) => {
+        const isActive = state.started && !state.gameOver && i === state.currentPlayerIndex;
+        const currentTurnDarts = isActive ? state.currentTurnThrows.length : 0;
         return `
           <tr class="${isActive ? 'active-row' : ''}">
             <td><strong>${p.name}</strong></td>
             <td><strong>${p.score}</strong></td>
             <td>R${state.currentRound}</td>
-            <td>${isActive ? getTurnTotal() : (p.rounds[state.currentRound - 1] || 0)}</td>
-            <td>${isActive ? state.currentTurnThrows.length : 0} / 3</td>
+            <td>${isActive ? 'In Progress' : 'Waiting'}</td>
+            <td>${currentTurnDarts}/3</td>
           </tr>
         `;
       }).join('');
@@ -581,9 +590,9 @@
       }
       const sorted = [...state.players].sort((a, b) => b.score - a.score);
       const medals = ['1st', '2nd', '3rd'];
-      els.rankingList.innerHTML = sorted.map((p, idx) => `
+      els.rankingList.innerHTML = sorted.map((p, i) => `
         <div class="rank-row">
-          <span class="medal">${medals[idx] || `${idx + 1}th`}</span>
+          <span class="medal">${medals[i] || `#${i + 1}`}</span>
           <span class="name">${p.name}</span>
           <span class="score">${p.score} pts</span>
         </div>
@@ -591,46 +600,52 @@
     }
 
     function updateStatus() {
+      els.roundDisplay.textContent = `Round ${state.currentRound} of 6`;
+      els.doubleRoundDisplay.textContent = state.currentRound === 6 ? 'Double Scoring Active' : 'Standard scoring';
+
       if (!state.started) {
         els.headerStatus.textContent = 'Waiting for players';
         els.currentPlayerDisplay.textContent = '—';
         els.dartsDisplay.textContent = '0 / 3';
         els.turnTotalDisplay.textContent = '0';
-        els.roundDisplay.textContent = 'Round 1 of 6';
-        els.doubleRoundDisplay.textContent = 'Standard scoring';
         els.endgameBanner.classList.remove('show');
-        return;
-      }
-
-      if (state.gameOver) {
+      } else if (state.gameOver) {
         els.headerStatus.textContent = 'Match Complete';
-        els.currentPlayerDisplay.textContent = 'Finished';
+        els.currentPlayerDisplay.textContent = 'Game Over';
         els.dartsDisplay.textContent = '3 / 3';
-        els.turnTotalDisplay.textContent = '—';
+        els.turnTotalDisplay.textContent = '0';
         els.endgameBanner.classList.add('show');
-        return;
+      } else {
+        const currentPlayer = state.players[state.currentPlayerIndex];
+        els.headerStatus.textContent = `Active: ${currentPlayer ? currentPlayer.name : '—'}`;
+        els.currentPlayerDisplay.textContent = currentPlayer ? currentPlayer.name : '—';
+        els.dartsDisplay.textContent = `${state.currentTurnThrows.length} / 3`;
+        els.turnTotalDisplay.textContent = getTurnTotal();
+        els.endgameBanner.classList.remove('show');
       }
 
-      const currentP = state.players[state.currentPlayerIndex];
-      els.headerStatus.textContent = `Round ${state.currentRound} in progress`;
-      els.currentPlayerDisplay.textContent = currentP ? currentP.name : '—';
-      els.dartsDisplay.textContent = `${state.currentTurnThrows.length} / 3`;
-      els.turnTotalDisplay.textContent = getTurnTotal();
-      els.roundDisplay.textContent = `Round ${state.currentRound} of 6`;
-      els.doubleRoundDisplay.textContent = state.currentRound === 6 ? 'Double points round!' : 'Standard scoring';
+      els.boardTypeSelect.disabled = state.started;
+      els.addPlayerBtn.disabled = state.started;
+      els.startGameBtn.disabled = state.started || state.players.length === 0;
     }
 
-    // Event Listeners
-    els.addPlayerBtn.addEventListener('click', addPlayer);
-    els.startGameBtn.addEventListener('click', startGame);
-    els.resetGameBtn.addEventListener('click', resetMatch);
     els.boardTypeSelect.addEventListener('change', () => {
-      state.boardType = els.boardTypeSelect.value;
-      renderScoringInterface();
-      syncGameState();
+      if (!state.started) {
+        state.boardType = els.boardTypeSelect.value;
+        renderScoringInterface();
+        syncGameState();
+      }
     });
 
-    // Initial UI Render
+    els.addPlayerBtn.addEventListener('click', addPlayer);
+    els.startGameBtn.addEventListener('click', startGame);
+    els.resetGameBtn.addEventListener('click', resetGame);
+
+    els.playerName.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') addPlayer();
+    });
+
+    // Initial load interface setup
     renderScoringInterface();
     updateStatus();
   </script>
