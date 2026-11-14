@@ -1110,42 +1110,42 @@
       return rounds > 0 ? (total / rounds).toFixed(2) : "0.00";
     }
 
-    function sendToLeague() {
-      if (!state.gameOver || !state.players.length) return;
+  function sendToLeague() {
+  if (!state.gameOver || !state.players.length) return;
 
-      const chosenLeague = els.targetLeagueSelect.value;
-      localStorage.setItem('haalis_selected_target_league', chosenLeague);
+  const chosenLeague = els.targetLeagueSelect.value;
+  localStorage.setItem('haalis_selected_target_league', chosenLeague);
 
-      const sortedPlayers = [...state.players].sort((a, b) => b.score - a.score);
+  const sortedPlayers = [...state.players].sort((a, b) => b.score - a.score);
 
-      const now = new Date();
-      const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-        .toISOString()
-        .slice(0, 16);
+  const now = new Date();
+  const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 16);
 
-      const payload = {
-        leagueName: chosenLeague,
-        eventName: 'Robin Hood',
-        mode: state.boardType === 'quad' ? 'Quad Board' : 'Basic Board',
-        date: localDateTime,
-        players: sortedPlayers.map((p, index) => ({
-          name: p.name,
-          score: p.score,
-          rank: index + 1,
-          ppr: calcPointsPerRound(p.score, MAX_ROUNDS),
-          subscores: (p.rounds || []).reduce((acc, r) => {
-            acc[`R${r.round}`] = r.total;
-            return acc;
-          }, {})
-        }))
-      };
+  const payload = {
+    leagueName: chosenLeague,
+    event: 'Robin Hood', // Changed from eventName to match league app listener
+    eventName: 'Robin Hood',
+    mode: state.boardType === 'quad' ? 'Quad Board' : 'Basic Board',
+    date: localDateTime,
+    players: sortedPlayers.map((p, index) => ({
+      name: p.name,
+      score: p.score,
+      rank: index + 1,
+      ppr: calcPointsPerRound(p.score, MAX_ROUNDS),
+      subscores: (p.rounds || []).reduce((acc, r) => {
+        acc[`R${r.round}`] = r.total;
+        return acc;
+      }, {})
+    }))
+  };
 
-      localStorage.setItem('haalis_pending_match', JSON.stringify(payload));
-      els.leagueSyncStatus.textContent = '✓ Match queued! Opening Hellcastle League...';
+  localStorage.setItem('haalis_pending_match', JSON.stringify(payload));
+  els.leagueSyncStatus.textContent = '✓ Match queued! Opening Hellcastle League...';
 
-      window.open(LEAGUE_URL, '_blank');
-    }
-
+  window.open('https://herbenero.github.io/Hellcastle-League/', '_blank');
+}
     function escapeHtml(str) {
       return String(str)
         .replace(/&/g, '&amp;')
