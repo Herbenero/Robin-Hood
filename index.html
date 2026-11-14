@@ -222,6 +222,8 @@
       color: #ffffff;
       border-color: rgba(104, 211, 145, 0.6);
       box-shadow: 0 4px 14px rgba(56, 161, 105, 0.35);
+      width: 100%;
+      padding: 12px;
     }
 
     .player-chips {
@@ -480,15 +482,16 @@
       padding-top: 14px;
       border-top: 1px solid rgba(255, 255, 255, 0.14);
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .league-sync-status {
       color: var(--gold-2);
       font-weight: 700;
       font-size: 0.92rem;
+      text-align: center;
+      margin-top: 4px;
     }
 
     .overlay {
@@ -632,6 +635,12 @@
         <div class="endgame" id="endgameBanner">
           <div><strong>Match Complete!</strong> Final rankings are shown on the scoreboard in descending order.</div>
           <div class="league-submit-bar">
+            <label style="font-size: 0.85rem; color: var(--muted); font-weight: bold;" for="targetLeagueSelect">Select Target League:</label>
+            <select id="targetLeagueSelect" aria-label="Target League">
+              <option value="Royal Couple">Royal Couple</option>
+              <option value="Papal 1">Papal 1</option>
+              <option value="Faubion 1">Faubion 1</option>
+            </select>
             <button class="btn btn-league" id="sendToLeagueBtn" type="button">🚀 Send to League Form</button>
             <span class="league-sync-status" id="leagueSyncStatus"></span>
           </div>
@@ -744,6 +753,7 @@
       scoreboardBody: document.getElementById('scoreboardBody'),
       rankingList: document.getElementById('rankingList'),
       endgameBanner: document.getElementById('endgameBanner'),
+      targetLeagueSelect: document.getElementById('targetLeagueSelect'),
       sendToLeagueBtn: document.getElementById('sendToLeagueBtn'),
       leagueSyncStatus: document.getElementById('leagueSyncStatus'),
       rulesTokens: document.getElementById('rulesTokens'),
@@ -1099,6 +1109,9 @@
     function sendToLeague() {
       if (!state.gameOver || !state.players.length) return;
 
+      const chosenLeague = els.targetLeagueSelect.value;
+      localStorage.setItem('haalis_selected_target_league', chosenLeague);
+
       const sortedPlayers = [...state.players].sort((a, b) => b.score - a.score);
 
       const now = new Date();
@@ -1107,6 +1120,7 @@
         .slice(0, 16);
 
       const payload = {
+        leagueName: chosenLeague,
         eventName: 'Robin Hood',
         mode: state.boardType === 'quad' ? 'Quad Board' : 'Basic Board',
         date: localDateTime,
@@ -1134,6 +1148,12 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    // Restore target league preference on load
+    const lastLeague = localStorage.getItem('haalis_selected_target_league');
+    if (lastLeague && els.targetLeagueSelect) {
+      els.targetLeagueSelect.value = lastLeague;
     }
 
     // Real-time Listener
