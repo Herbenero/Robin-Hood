@@ -1106,6 +1106,10 @@
       syncGameState();
     }
 
+    function calcPointsPerRound(total, rounds) {
+      return rounds > 0 ? (total / rounds).toFixed(2) : "0.00";
+    }
+
     function sendToLeague() {
       if (!state.gameOver || !state.players.length) return;
 
@@ -1128,6 +1132,7 @@
           name: p.name,
           score: p.score,
           rank: index + 1,
+          ppr: calcPointsPerRound(p.score, MAX_ROUNDS),
           subscores: (p.rounds || []).reduce((acc, r) => {
             acc[`R${r.round}`] = r.total;
             return acc;
@@ -1219,6 +1224,61 @@
     });
 
     renderUI();
+  </script>
+
+  <!-- Hellcastle League Auto-Fill Bridge Handler -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // If this page IS the Hellcastle League app, check for pending match data
+      const pendingMatchJSON = localStorage.getItem("haalis_pending_match");
+      if (!pendingMatchJSON) return;
+
+      try {
+        const matchData = JSON.parse(pendingMatchJSON);
+        
+        // 1. Select League if dropdown and leagueName exist
+        if (matchData.leagueName) {
+          const leagueSelect = document.querySelector("#setupPanel select, select"); // matches league setup
+          // or specifically look for active league select
+          const allSelects = document.querySelectorAll("select");
+          allSelects.forEach(sel => {
+            for (let opt of sel.options) {
+              if (opt.value === matchData.leagueName || opt.textContent.trim() === matchData.leagueName) {
+                sel.value = opt.value;
+                sel.dispatchEvent(new Event('change'));
+              }
+            }
+          });
+        }
+
+        // 2. Select Event Name in Event Results dropdown
+        const eventSelect = document.querySelector("select[aria-label*='Event'], select:not([aria-label])");
+        if (eventSelect) {
+          for (let opt of eventSelect.options) {
+            if (opt.textContent.trim() === matchData.eventName) {
+              eventSelect.value = opt.value;
+              eventSelect.dispatchEvent(new Event('change'));
+              break;
+            }
+          }
+        }
+
+        // 3. Populate Date & Time if present
+        if (matchData.date) {
+          const dateInput = document.querySelector("input[type='datetime-local'], input[type='date']");
+          if (dateInput) {
+            dateInput.value = matchData.date;
+            dateInput.dispatchEvent(new Event('input'));
+            dateInput.dispatchEvent(new Event('change'));
+          }
+        }
+
+        // 4. Fill Player Scores / Inputs in the League form
+        // (The league page auto-parser handles haalis_pending_match if implemented in its DOMContentLoaded listener)
+      } catch (err) {
+        console.error("Error auto-filling league form:", err);
+      }
+    });
   </script>
 </body>
 </html>
