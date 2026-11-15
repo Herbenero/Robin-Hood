@@ -20,28 +20,16 @@
       --muted: #b8c4bb;
       --shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       min-height: 100vh;
       font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(212, 175, 55, 0.14), transparent 34%),
-        radial-gradient(circle at bottom right, rgba(56, 161, 105, 0.14), transparent 34%),
-        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+      background: radial-gradient(circle at top left, rgba(212, 175, 55, 0.14), transparent 34%), radial-gradient(circle at bottom right, rgba(56, 161, 105, 0.14), transparent 34%), linear-gradient(160deg, var(--bg-1), var(--bg-2));
       padding: 20px;
     }
-
-    .shell {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      gap: 20px;
-    }
-
+    .shell { max-width: 1200px; margin: 0 auto; display: grid; gap: 20px; }
     .hero {
       background: linear-gradient(135deg, rgba(22, 43, 31, 0.95), rgba(14, 28, 20, 0.95));
       border: 1px solid var(--border);
@@ -51,15 +39,7 @@
       display: grid;
       gap: 14px;
     }
-
-    .hero-top {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
+    .hero-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
     .badge {
       display: inline-flex;
       align-items: center;
@@ -74,7 +54,6 @@
       text-transform: uppercase;
       font-weight: 700;
     }
-
     h1 {
       margin: 0;
       font-size: clamp(1.9rem, 3.6vw, 3rem);
@@ -82,75 +61,18 @@
       color: var(--gold-2);
       text-shadow: 0 3px 16px rgba(0, 0, 0, 0.45);
     }
-
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      max-width: 780px;
-      line-height: 1.5;
-      font-size: 1rem;
-    }
-
-    .rules-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .rule-pill {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 8px 12px;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-
+    .subtitle { margin: 0; color: var(--muted); max-width: 780px; line-height: 1.5; font-size: 1rem; }
+    .rules-strip { display: flex; flex-wrap: wrap; gap: 10px; }
+    .rule-pill { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 12px; border-radius: 12px; font-size: 0.9rem; color: var(--text); }
     .rule-pill strong { color: var(--gold-2); }
     .rule-pill.bad strong { color: #fc8181; }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1.05fr 1.25fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    @media (max-width: 960px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-    }
-
-    .card h2 {
-      margin: 0 0 6px;
-      font-size: 1.3rem;
-      color: var(--gold-2);
-    }
-
-    .card p.desc {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .setup-row {
-      display: grid;
-      grid-template-columns: 1fr 180px auto;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    @media (max-width: 640px) {
-      .setup-row { grid-template-columns: 1fr; }
-    }
-
+    .grid { display: grid; grid-template-columns: 1.05fr 1.25fr; gap: 20px; align-items: start; }
+    @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 22px; padding: 22px; box-shadow: var(--shadow); }
+    .card h2 { margin: 0 0 6px; font-size: 1.3rem; color: var(--gold-2); }
+    .card p.desc { margin: 0 0 18px; color: var(--muted); font-size: 0.94rem; }
+    .setup-row { display: grid; grid-template-columns: 1fr 180px auto; gap: 10px; margin-bottom: 12px; }
+    @media (max-width: 640px) { .setup-row { grid-template-columns: 1fr; } }
     input[type="text"], select {
       width: 100%;
       padding: 12px 14px;
@@ -161,28 +83,12 @@
       font-size: 1rem;
       outline: none;
     }
-
     input[type="text"]:focus, select:focus {
       border-color: var(--gold);
       box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
     }
-
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      color: var(--muted);
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-
-    .checkbox-row input {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--gold);
-    }
-
+    .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; color: var(--muted); font-size: 0.95rem; cursor: pointer; }
+    .checkbox-row input { width: 18px; height: 18px; accent-color: var(--gold); }
     .btn {
       border: 1px solid rgba(212, 175, 55, 0.4);
       background: linear-gradient(180deg, #e0be53, #b99224);
@@ -194,29 +100,10 @@
       cursor: pointer;
       transition: transform 0.12s ease, filter 0.12s ease;
     }
-
-    .btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      filter: brightness(1.06);
-    }
-
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text);
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-
-    .btn-danger {
-      background: rgba(229, 62, 62, 0.2);
-      color: #fed7d7;
-      border-color: rgba(229, 62, 62, 0.45);
-    }
-
+    .btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.06); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-secondary { background: rgba(255, 255, 255, 0.08); color: var(--text); border-color: rgba(255, 255, 255, 0.16); }
+    .btn-danger { background: rgba(229, 62, 62, 0.2); color: #fed7d7; border-color: rgba(229, 62, 62, 0.45); }
     .btn-league {
       background: linear-gradient(180deg, #48bb78, #2f855a);
       color: #ffffff;
@@ -225,14 +112,7 @@
       width: 100%;
       padding: 12px;
     }
-
-    .player-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 14px 0 18px;
-    }
-
+    .player-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
     .chip {
       display: inline-flex;
       align-items: center;
@@ -243,24 +123,8 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       font-weight: 700;
     }
-
-    .chip button {
-      border: none;
-      background: transparent;
-      color: #feb2b2;
-      font-weight: 900;
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 0 2px;
-    }
-
-    .actions-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
+    .chip button { border: none; background: transparent; color: #feb2b2; font-weight: 900; cursor: pointer; font-size: 1rem; padding: 0 2px; }
+    .actions-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
     .turn-banner {
       background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(56, 161, 105, 0.14));
       border: 1px solid rgba(212, 175, 55, 0.4);
@@ -273,59 +137,14 @@
       align-items: center;
       gap: 12px;
     }
-
-    .turn-banner .label {
-      color: var(--muted);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .turn-banner .player-name {
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: var(--gold-2);
-    }
-
-    .turn-stats {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .stat-box {
-      background: rgba(8, 17, 12, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 8px 12px;
-      min-width: 96px;
-      text-align: center;
-    }
-
-    .stat-box .small {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .stat-box .val {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    .dart-pad {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    @media (max-width: 520px) {
-      .dart-pad { grid-template-columns: 1fr; }
-    }
-
+    .turn-banner .label { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .turn-banner .player-name { font-size: 1.5rem; font-weight: 900; color: var(--gold-2); }
+    .turn-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+    .stat-box { background: rgba(8, 17, 12, 0.72); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 8px 12px; min-width: 96px; text-align: center; }
+    .stat-box .small { display: block; font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+    .stat-box .val { font-size: 1.15rem; font-weight: 800; color: var(--text); }
+    .dart-pad { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+    @media (max-width: 520px) { .dart-pad { grid-template-columns: 1fr; } }
     .score-btn {
       display: flex;
       justify-content: space-between;
@@ -341,172 +160,31 @@
       cursor: pointer;
       transition: transform 0.1s ease, background 0.12s ease, border-color 0.12s ease;
     }
-
-    .score-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      background: rgba(212, 175, 55, 0.16);
-      border-color: rgba(212, 175, 55, 0.45);
-    }
-
-    .score-btn:disabled {
-      opacity: 0.42;
-      cursor: not-allowed;
-    }
-
-    .score-btn .pts {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(212, 175, 55, 0.18);
-      color: var(--gold-2);
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .score-btn.penalty {
-      border-color: rgba(229, 62, 62, 0.4);
-      background: rgba(229, 62, 62, 0.12);
-    }
-
-    .score-btn.penalty .pts {
-      background: rgba(229, 62, 62, 0.25);
-      color: #feb2b2;
-    }
-
-    .throws-box {
-      background: rgba(8, 17, 12, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 12px 14px;
-    }
-
-    .throws-box h3 {
-      margin: 0 0 8px;
-      font-size: 0.92rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .throw-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      min-height: 36px;
-      align-items: center;
-    }
-
-    .throw-tag {
-      padding: 6px 10px;
-      border-radius: 10px;
-      background: rgba(212, 175, 55, 0.16);
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .throw-tag.neg {
-      background: rgba(229, 62, 62, 0.18);
-      border-color: rgba(229, 62, 62, 0.42);
-      color: #fed7d7;
-    }
-
-    .scoreboard {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 16px;
-    }
-
-    .scoreboard th, .scoreboard td {
-      padding: 12px 12px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .scoreboard th {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      background: rgba(8, 17, 12, 0.72);
-    }
-
-    .scoreboard tr.active-row {
-      background: rgba(212, 175, 55, 0.14);
-    }
-
-    .scoreboard tr.leader-row td:first-child::after {
-      content: " 👑";
-    }
-
-    .total-cell {
-      font-size: 1.15rem;
-      font-weight: 900;
-      color: var(--gold-2);
-    }
-
-    .ranking {
-      margin-top: 16px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .rank-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .rank-item.first {
-      border-color: rgba(212, 175, 55, 0.5);
-      background: rgba(212, 175, 55, 0.15);
-    }
-
-    .endgame {
-      display: none;
-      margin-top: 16px;
-      padding: 18px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(56, 161, 105, 0.22), rgba(212, 175, 55, 0.2));
-      border: 1px solid rgba(104, 211, 145, 0.5);
-    }
-
+    .score-btn:hover:not(:disabled) { transform: translateY(-1px); background: rgba(212, 175, 55, 0.16); border-color: rgba(212, 175, 55, 0.45); }
+    .score-btn:disabled { opacity: 0.42; cursor: not-allowed; }
+    .score-btn .pts { padding: 4px 10px; border-radius: 999px; background: rgba(212, 175, 55, 0.18); color: var(--gold-2); font-weight: 800; white-space: nowrap; }
+    .score-btn.penalty { border-color: rgba(229, 62, 62, 0.4); background: rgba(229, 62, 62, 0.12); }
+    .score-btn.penalty .pts { background: rgba(229, 62, 62, 0.25); color: #feb2b2; }
+    .throws-box { background: rgba(8, 17, 12, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 12px 14px; }
+    .throws-box h3 { margin: 0 0 8px; font-size: 0.92rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .throw-list { display: flex; flex-wrap: wrap; gap: 8px; min-height: 36px; align-items: center; }
+    .throw-tag { padding: 6px 10px; border-radius: 10px; background: rgba(212, 175, 55, 0.16); border: 1px solid rgba(212, 175, 55, 0.35); font-size: 0.9rem; font-weight: 700; }
+    .throw-tag.neg { background: rgba(229, 62, 62, 0.18); border-color: rgba(229, 62, 62, 0.42); color: #fed7d7; }
+    .scoreboard { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 16px; }
+    .scoreboard th, .scoreboard td { padding: 12px 12px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    .scoreboard th { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: rgba(8, 17, 12, 0.72); }
+    .scoreboard tr.active-row { background: rgba(212, 175, 55, 0.14); }
+    .scoreboard tr.leader-row td:first-child::after { content: " 👑"; }
+    .total-cell { font-size: 1.15rem; font-weight: 900; color: var(--gold-2); }
+    .ranking { margin-top: 16px; display: grid; gap: 8px; }
+    .rank-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .rank-item.first { border-color: rgba(212, 175, 55, 0.5); background: rgba(212, 175, 55, 0.15); }
+    .endgame { display: none; margin-top: 16px; padding: 18px; border-radius: 16px; background: linear-gradient(135deg, rgba(56, 161, 105, 0.22), rgba(212, 175, 55, 0.2)); border: 1px solid rgba(104, 211, 145, 0.5); }
     .endgame.show { display: block; }
-
-    .league-submit-bar {
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .league-sync-status {
-      color: var(--gold-2);
-      font-weight: 700;
-      font-size: 0.92rem;
-      text-align: center;
-      margin-top: 4px;
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(4, 10, 7, 0.72);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 50;
-    }
-
+    .league-submit-bar { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.14); display: flex; flex-direction: column; gap: 8px; }
+    .league-sync-status { color: var(--gold-2); font-weight: 700; font-size: 0.92rem; text-align: center; margin-top: 4px; }
+    .overlay { position: fixed; inset: 0; background: rgba(4, 10, 7, 0.72); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
     .overlay.show { display: flex; }
-
     .flash-card {
       width: min(460px, 100%);
       background: linear-gradient(160deg, #173022, #0d1c14);
@@ -517,44 +195,12 @@
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
       animation: pop 0.18s ease-out;
     }
-
-    @keyframes pop {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .flash-card .mini {
-      color: var(--gold-2);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 0.82rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .flash-card h4 {
-      margin: 0 0 8px;
-      font-size: 1.8rem;
-      color: var(--text);
-    }
-
-    .flash-card .score-line {
-      font-size: 1.35rem;
-      font-weight: 900;
-      color: var(--green-2);
-      margin-bottom: 8px;
-    }
-
-    .flash-card .sub {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .footer-note {
-      color: var(--muted);
-      font-size: 0.86rem;
-      margin-top: 12px;
-    }
+    @keyframes pop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .flash-card .mini { color: var(--gold-2); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.82rem; font-weight: 800; margin-bottom: 8px; }
+    .flash-card h4 { margin: 0 0 8px; font-size: 1.8rem; color: var(--text); }
+    .flash-card .score-line { font-size: 1.35rem; font-weight: 900; color: var(--green-2); margin-bottom: 8px; }
+    .flash-card .sub { color: var(--muted); font-size: 0.95rem; }
+    .footer-note { color: var(--muted); font-size: 0.86rem; margin-top: 12px; }
   </style>
 </head>
 <body>
@@ -566,9 +212,7 @@
       </div>
       <h1>ROBIN HOOD</h1>
       <p class="subtitle">
-        Aim true. Avoid the Sheriff. Each player throws <strong>3 darts per round</strong> across <strong>6 rounds</strong>.
-        Hit closer to the bullseye to score more. But beware: the Sheriff punishes <strong>triples</strong>, costing points.
-        In <strong>Round 6</strong>, every throw is doubled.
+        Aim true. Avoid the Sheriff. Each player throws <strong>3 darts per round</strong> across <strong>6 rounds</strong>. Hit closer to the bullseye to score more. But beware: the Sheriff punishes <strong>triples</strong>, costing points. In <strong>Round 6</strong>, every throw is doubled.
       </p>
       <div class="rules-strip" id="rulesTokens"></div>
     </section>
@@ -580,7 +224,6 @@
           <span class="badge" id="roundIndicator">Current Progress: Round 1 of 6 • Standard scoring</span>
         </div>
         <p class="desc">Add players, start the match, then score each dart throw.</p>
-
         <div class="setup-row">
           <input id="playerNameInput" type="text" maxlength="24" placeholder="Player name e.g. Marian" />
           <select id="boardTypeSelect" aria-label="Board Type">
@@ -589,19 +232,15 @@
           </select>
           <button class="btn" id="addPlayerBtn" type="button">Add Player</button>
         </div>
-
         <label class="checkbox-row">
           <input id="randomizeCheckbox" type="checkbox" />
           <span>Randomize player order on start</span>
         </label>
-
         <div class="actions-bar">
           <button class="btn" id="startGameBtn" type="button">Start Game</button>
           <button class="btn btn-danger" id="resetMatchBtn" type="button">Reset Match</button>
         </div>
-
         <div class="player-chips" id="playerChips"></div>
-
         <div class="turn-banner">
           <div>
             <div class="label">Current Player</div>
@@ -618,20 +257,16 @@
             </div>
           </div>
         </div>
-
         <div class="dart-pad" id="scoreControls"></div>
-
         <div style="margin-bottom: 14px;">
           <button class="btn btn-secondary" id="undoThrowBtn" type="button">Undo • Remove last throw</button>
         </div>
-
         <div class="throws-box">
           <h3>Current Turn Throws</h3>
           <div class="throw-list" id="currentThrowsList">
             <span style="color: var(--muted); font-size: 0.92rem;">No throws yet</span>
           </div>
         </div>
-
         <div class="endgame" id="endgameBanner">
           <div><strong>Match Complete!</strong> Final rankings are shown on the scoreboard in descending order.</div>
           <div class="league-submit-bar">
@@ -650,7 +285,6 @@
       <section class="card">
         <h2 id="scoreboardTitle">Scoreboard</h2>
         <p class="desc">Live totals update after every completed turn.</p>
-
         <div style="overflow:auto;">
           <table class="scoreboard" aria-describedby="scoreboardTitle">
             <thead>
@@ -669,9 +303,7 @@
             </tbody>
           </table>
         </div>
-
         <div class="ranking" id="rankingList" aria-live="polite"></div>
-
         <p class="footer-note">Tip: Round 6 doubles every throw, including Triple penalties.</p>
       </section>
     </section>
@@ -700,7 +332,6 @@
       databaseURL: "https://robinhoodmulti-default-rtdb.firebaseio.com"
     };
 
-    // Initialize Firebase & Database Reference
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const matchRef = database.ref('robinhood/currentMatch');
@@ -710,18 +341,17 @@
     const LEAGUE_URL = 'https://herbenero.github.io/Hellcastle-League/';
 
     const ZONES = [
-      { id: 'miss', label: 'Miss', base: 0, quadOnly: false, penalty: false },
-      { id: 'dbull', label: 'Double Bull', base: 10, quadOnly: false, penalty: false },
-      { id: 'bull', label: 'Bull', base: 6, quadOnly: false, penalty: false },
-      { id: 'quad', label: 'Quad', base: 5, quadOnly: true, penalty: false },
-      { id: 'double', label: 'Double', base: 8, quadOnly: false, penalty: false },
-      { id: 'triple', label: 'Triple', base: -2, quadOnly: false, penalty: true },
-      { id: 'middle', label: 'Middle', base: 3, quadOnly: false, penalty: false },
-      { id: 'inner', label: 'Inner', base: 1, quadOnly: false, penalty: false },
-      { id: 'outer', label: 'Outer', base: 2, quadOnly: false, penalty: false }
+      { id: 'miss', label: 'Miss', base: 0, quadOnly: false, basicExclude: false, penalty: false },
+      { id: 'dbull', label: 'Double Bull', base: 10, quadOnly: false, basicExclude: false, penalty: false },
+      { id: 'bull', label: 'Bull', base: 6, quadOnly: false, basicExclude: false, penalty: false },
+      { id: 'quad', label: 'Quad', base: 5, quadOnly: true, basicExclude: true, penalty: false },
+      { id: 'double', label: 'Double', base: 8, quadOnly: false, basicExclude: false, penalty: false },
+      { id: 'triple', label: 'Triple', base: -2, quadOnly: false, basicExclude: false, penalty: true },
+      { id: 'middle', label: 'Middle', base: 3, quadOnly: false, basicExclude: true, penalty: false },
+      { id: 'inner', label: 'Inner', base: 1, quadOnly: false, basicExclude: false, penalty: false },
+      { id: 'outer', label: 'Outer', base: 2, quadOnly: false, basicExclude: false, penalty: false }
     ];
 
-    // Local Game State
     let state = {
       players: [],
       started: false,
@@ -770,7 +400,11 @@
     }
 
     function getActiveZones() {
-      return ZONES.filter(z => state.boardType === 'quad' || !z.quadOnly);
+      return ZONES.filter(z => {
+        if (state.boardType === 'basic' && z.basicExclude) return false;
+        if (state.boardType !== 'quad' && z.quadOnly) return false;
+        return true;
+      });
     }
 
     function getRoundMultiplier(round = state.currentRound) {
@@ -795,7 +429,6 @@
       const mult = getRoundMultiplier();
       const zones = getActiveZones();
       const disabled = !state.started || state.gameOver || state.currentTurnThrows.length >= DARTS_PER_TURN;
-
       els.scoreControls.innerHTML = zones.map(z => {
         const pts = z.base * mult;
         const unit = Math.abs(pts) === 1 ? 'point' : 'points';
@@ -822,7 +455,6 @@
         els.currentThrowsList.innerHTML = '<span style="color: var(--muted); font-size: 0.92rem;">No throws yet</span>';
         return;
       }
-
       els.currentThrowsList.innerHTML = state.currentTurnThrows.map((t, i) => `
         <span class="throw-tag ${t.points < 0 ? 'neg' : ''}">
           D${i + 1}: ${escapeHtml(t.label)} (${formatSigned(t.points)})
@@ -840,34 +472,17 @@
         els.rankingList.innerHTML = '';
         return;
       }
-
       const maxScore = Math.max(...state.players.map(p => p.score));
       const anyScored = state.players.some(p => (p.rounds && p.rounds.length > 0) || state.currentTurnThrows.length > 0);
-
       els.scoreboardBody.innerHTML = state.players.map((p, idx) => {
         const isCurrent = state.started && !state.gameOver && idx === state.currentPlayerIndex;
         const pendingPoints = isCurrent ? state.currentTurnThrows.reduce((sum, t) => sum + t.points, 0) : 0;
         const displayTotal = p.score + pendingPoints;
         const completedRounds = (p.rounds || []).length;
-        const roundText = state.gameOver
-          ? 'Done'
-          : isCurrent
-            ? `R${state.currentRound}`
-            : `R${Math.min(completedRounds + 1, MAX_ROUNDS)}`;
-        const turnStatus = state.gameOver
-          ? 'Finished'
-          : !state.started
-            ? 'Waiting'
-            : isCurrent
-              ? 'Throwing'
-              : 'Waiting';
-        const thrownText = state.gameOver
-          ? `${MAX_ROUNDS * DARTS_PER_TURN}/${MAX_ROUNDS * DARTS_PER_TURN}`
-          : isCurrent
-            ? `${state.currentTurnThrows.length}/${DARTS_PER_TURN}`
-            : '0/3';
+        const roundText = state.gameOver ? 'Done' : isCurrent ? `R${state.currentRound}` : `R${Math.min(completedRounds + 1, MAX_ROUNDS)}`;
+        const turnStatus = state.gameOver ? 'Finished' : !state.started ? 'Waiting' : isCurrent ? 'Throwing' : 'Waiting';
+        const thrownText = state.gameOver ? `${MAX_ROUNDS * DARTS_PER_TURN}/${MAX_ROUNDS * DARTS_PER_TURN}` : isCurrent ? `${state.currentTurnThrows.length}/${DARTS_PER_TURN}` : '0/3';
         const isLeader = anyScored && displayTotal === maxScore;
-
         return `
           <tr class="${isCurrent ? 'active-row' : ''} ${isLeader ? 'leader-row' : ''}">
             <td><strong>${escapeHtml(p.name)}</strong></td>
@@ -886,7 +501,7 @@
           return { name: p.name, total: p.score + pending };
         })
         .sort((a, b) => b.total - a.total);
-
+      
       const ordinals = ['1ST', '2ND', '3RD', '4TH', '5TH', '6TH', '7TH', '8TH'];
       els.rankingList.innerHTML = ranked.map((r, idx) => `
         <div class="rank-item ${idx === 0 && anyScored ? 'first' : ''}">
@@ -920,10 +535,8 @@
       const activePlayer = state.started && !state.gameOver ? state.players[state.currentPlayerIndex] : null;
       els.currentPlayerDisplay.textContent = activePlayer ? activePlayer.name : '—';
       els.turnDartsDisplay.textContent = `${state.currentTurnThrows.length} / ${DARTS_PER_TURN}`;
-
       const turnSum = state.currentTurnThrows.reduce((sum, t) => sum + t.points, 0);
       els.turnTotalDisplay.textContent = formatSigned(turnSum);
-
       els.undoThrowBtn.disabled = !state.started || state.gameOver || (state.currentTurnThrows.length === 0 && (!state.history || state.history.length === 0));
 
       if (state.gameOver) {
@@ -945,7 +558,6 @@
       els.flashRoundTotal.textContent = `Round Total: ${formatSigned(roundTotal)}`;
       els.flashSubtext.textContent = nextText;
       els.flashOverlay.classList.add('show');
-
       flashTimer = setTimeout(() => {
         els.flashOverlay.classList.remove('show');
       }, 1650);
@@ -955,19 +567,12 @@
       if (state.started) return;
       const rawName = els.playerNameInput.value.trim();
       if (!rawName) return;
-
       const exists = state.players.some(p => p.name.toLowerCase() === rawName.toLowerCase());
       if (exists) {
         els.playerNameInput.value = '';
         return;
       }
-
-      state.players.push({
-        name: rawName,
-        score: 0,
-        rounds: []
-      });
-
+      state.players.push({ name: rawName, score: 0, rounds: [] });
       els.playerNameInput.value = '';
       syncGameState();
     }
@@ -980,14 +585,12 @@
 
     function startGame() {
       if (state.started || state.players.length < 1) return;
-
       if (state.randomizePlayers && state.players.length > 1) {
         for (let i = state.players.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [state.players[i], state.players[j]] = [state.players[j], state.players[i]];
         }
       }
-
       state.started = true;
       state.currentPlayerIndex = 0;
       state.currentRound = 1;
@@ -995,24 +598,16 @@
       state.history = [];
       state.gameOver = false;
       els.leagueSyncStatus.textContent = '';
-
       syncGameState();
     }
 
     function recordThrow(zoneId) {
       if (!state.started || state.gameOver) return;
       if (state.currentTurnThrows.length >= DARTS_PER_TURN) return;
-
       const zone = getActiveZones().find(z => z.id === zoneId);
       if (!zone) return;
-
       const points = zone.base * getRoundMultiplier();
-      state.currentTurnThrows.push({
-        id: zone.id,
-        label: zone.label,
-        points
-      });
-
+      state.currentTurnThrows.push({ id: zone.id, label: zone.label, points });
       if (state.currentTurnThrows.length === DARTS_PER_TURN) {
         completeCurrentTurn();
       } else {
@@ -1023,13 +618,8 @@
     function completeCurrentTurn() {
       const player = state.players[state.currentPlayerIndex];
       const roundTotal = state.currentTurnThrows.reduce((sum, t) => sum + t.points, 0);
-
       if (!player.rounds) player.rounds = [];
-      player.rounds.push({
-        round: state.currentRound,
-        throws: [...state.currentTurnThrows],
-        total: roundTotal
-      });
+      player.rounds.push({ round: state.currentRound, throws: [...state.currentTurnThrows], total: roundTotal });
       player.score += roundTotal;
 
       if (!state.history) state.history = [];
@@ -1057,25 +647,18 @@
           state.currentPlayerIndex += 1;
         }
         const nextPlayer = state.players[state.currentPlayerIndex];
-        showTurnFlash(
-          finishedPlayerName,
-          roundTotal,
-          `Next up: ${nextPlayer.name} (Round ${state.currentRound})`
-        );
+        showTurnFlash(finishedPlayerName, roundTotal, `Next up: ${nextPlayer.name} (Round ${state.currentRound})`);
       }
-
       syncGameState();
     }
 
     function undoLastThrow() {
       if (!state.started || state.gameOver) return;
-
       if (state.currentTurnThrows.length > 0) {
         state.currentTurnThrows.pop();
         syncGameState();
         return;
       }
-
       if (state.history && state.history.length > 0) {
         const lastTurn = state.history.pop();
         const prevPlayer = state.players[lastTurn.playerIndex];
@@ -1110,42 +693,40 @@
       return rounds > 0 ? (total / rounds).toFixed(2) : "0.00";
     }
 
-  function sendToLeague() {
-  if (!state.gameOver || !state.players.length) return;
+    function sendToLeague() {
+      if (!state.gameOver || !state.players.length) return;
+      const chosenLeague = els.targetLeagueSelect.value;
+      localStorage.setItem('haalis_selected_target_league', chosenLeague);
 
-  const chosenLeague = els.targetLeagueSelect.value;
-  localStorage.setItem('haalis_selected_target_league', chosenLeague);
+      const sortedPlayers = [...state.players].sort((a, b) => b.score - a.score);
+      const now = new Date();
+      const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 16);
 
-  const sortedPlayers = [...state.players].sort((a, b) => b.score - a.score);
+      const payload = {
+        leagueName: chosenLeague,
+        event: 'Robin Hood',
+        eventName: 'Robin Hood',
+        mode: state.boardType === 'quad' ? 'Quad Board' : 'Basic Board',
+        date: localDateTime,
+        players: sortedPlayers.map((p, index) => ({
+          name: p.name,
+          score: p.score,
+          rank: index + 1,
+          ppr: calcPointsPerRound(p.score, MAX_ROUNDS),
+          subscores: (p.rounds || []).reduce((acc, r) => {
+            acc[`R${r.round}`] = r.total;
+            return acc;
+          }, {})
+        }))
+      };
 
-  const now = new Date();
-  const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-    .toISOString()
-    .slice(0, 16);
+      localStorage.setItem('haalis_pending_match', JSON.stringify(payload));
+      els.leagueSyncStatus.textContent = '✓ Match queued! Opening Hellcastle League...';
+      window.open('https://herbenero.github.io/Hellcastle-League/', '_blank');
+    }
 
-  const payload = {
-    leagueName: chosenLeague,
-    event: 'Robin Hood', // Changed from eventName to match league app listener
-    eventName: 'Robin Hood',
-    mode: state.boardType === 'quad' ? 'Quad Board' : 'Basic Board',
-    date: localDateTime,
-    players: sortedPlayers.map((p, index) => ({
-      name: p.name,
-      score: p.score,
-      rank: index + 1,
-      ppr: calcPointsPerRound(p.score, MAX_ROUNDS),
-      subscores: (p.rounds || []).reduce((acc, r) => {
-        acc[`R${r.round}`] = r.total;
-        return acc;
-      }, {})
-    }))
-  };
-
-  localStorage.setItem('haalis_pending_match', JSON.stringify(payload));
-  els.leagueSyncStatus.textContent = '✓ Match queued! Opening Hellcastle League...';
-
-  window.open('https://herbenero.github.io/Hellcastle-League/', '_blank');
-}
     function escapeHtml(str) {
       return String(str)
         .replace(/&/g, '&amp;')
@@ -1155,22 +736,16 @@
         .replace(/'/g, '&#39;');
     }
 
-    // Restore target league preference on load
     const lastLeague = localStorage.getItem('haalis_selected_target_league');
     if (lastLeague && els.targetLeagueSelect) {
       els.targetLeagueSelect.value = lastLeague;
     }
 
-    // Real-time Listener
     matchRef.on('value', (snapshot) => {
       const data = snapshot.val();
       if (data) {
         state = {
-          players: (data.players || []).map(p => ({
-            name: p.name,
-            score: p.score || 0,
-            rounds: p.rounds || []
-          })),
+          players: (data.players || []).map(p => ({ name: p.name, score: p.score || 0, rounds: p.rounds || [] })),
           started: data.started || false,
           currentPlayerIndex: data.currentPlayerIndex || 0,
           currentRound: data.currentRound || 1,
@@ -1184,101 +759,37 @@
       renderUI();
     });
 
-    // Event Listeners
     els.addPlayerBtn.addEventListener('click', addPlayer);
-    els.playerNameInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') addPlayer();
-    });
-
+    els.playerNameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addPlayer(); });
     els.boardTypeSelect.addEventListener('change', (e) => {
       if (state.started) return;
       state.boardType = e.target.value;
       syncGameState();
     });
-
     els.randomizeCheckbox.addEventListener('change', (e) => {
       if (state.started) return;
       state.randomizePlayers = e.target.checked;
       syncGameState();
     });
-
     els.playerChips.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-remove]');
       if (!btn) return;
       removePlayer(Number(btn.dataset.remove));
     });
-
     els.startGameBtn.addEventListener('click', startGame);
     els.resetMatchBtn.addEventListener('click', resetMatch);
     els.undoThrowBtn.addEventListener('click', undoLastThrow);
     els.sendToLeagueBtn.addEventListener('click', sendToLeague);
-
     els.scoreControls.addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-zone]');
       if (!btn) return;
       recordThrow(btn.dataset.zone);
     });
-
     els.flashOverlay.addEventListener('click', () => {
       els.flashOverlay.classList.remove('show');
     });
 
     renderUI();
-  </script>
-
-  <!-- Hellcastle League Auto-Fill Bridge Handler -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // If this page IS the Hellcastle League app, check for pending match data
-      const pendingMatchJSON = localStorage.getItem("haalis_pending_match");
-      if (!pendingMatchJSON) return;
-
-      try {
-        const matchData = JSON.parse(pendingMatchJSON);
-        
-        // 1. Select League if dropdown and leagueName exist
-        if (matchData.leagueName) {
-          const leagueSelect = document.querySelector("#setupPanel select, select"); // matches league setup
-          // or specifically look for active league select
-          const allSelects = document.querySelectorAll("select");
-          allSelects.forEach(sel => {
-            for (let opt of sel.options) {
-              if (opt.value === matchData.leagueName || opt.textContent.trim() === matchData.leagueName) {
-                sel.value = opt.value;
-                sel.dispatchEvent(new Event('change'));
-              }
-            }
-          });
-        }
-
-        // 2. Select Event Name in Event Results dropdown
-        const eventSelect = document.querySelector("select[aria-label*='Event'], select:not([aria-label])");
-        if (eventSelect) {
-          for (let opt of eventSelect.options) {
-            if (opt.textContent.trim() === matchData.eventName) {
-              eventSelect.value = opt.value;
-              eventSelect.dispatchEvent(new Event('change'));
-              break;
-            }
-          }
-        }
-
-        // 3. Populate Date & Time if present
-        if (matchData.date) {
-          const dateInput = document.querySelector("input[type='datetime-local'], input[type='date']");
-          if (dateInput) {
-            dateInput.value = matchData.date;
-            dateInput.dispatchEvent(new Event('input'));
-            dateInput.dispatchEvent(new Event('change'));
-          }
-        }
-
-        // 4. Fill Player Scores / Inputs in the League form
-        // (The league page auto-parser handles haalis_pending_match if implemented in its DOMContentLoaded listener)
-      } catch (err) {
-        console.error("Error auto-filling league form:", err);
-      }
-    });
   </script>
 </body>
 </html>
